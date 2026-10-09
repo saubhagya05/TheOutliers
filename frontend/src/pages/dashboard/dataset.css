@@ -1,0 +1,41 @@
+.ds-page { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; padding-bottom: 32px; }
+.ds-page h1 { font-size: 32px; }
+.ds-page section { display: grid; gap: 12px; }
+
+.ds-label { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.ds-badge { color: var(--red); border: 1px solid var(--red); border-radius: 999px; padding: 1px 8px; font-size: 10px; letter-spacing: .08em; }
+.ds-note { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+.ds-tiles, .ds-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.ds-tile, .ds-kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: grid; gap: 2px; }
+.ds-tile strong, .ds-kpi strong { font-family: var(--mono); font-size: 30px; line-height: 1.1; }
+.ds-tile span, .ds-kpi span { color: var(--muted); font-size: 13px; }
+.ds-kpi small { color: var(--muted); font-size: 12px; font-family: var(--mono); }
+.ds-kpi.accent { border-color: var(--red); }
+.ds-kpi.accent strong { color: var(--red); }
+
+.ds-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.ds-stack { display: grid; gap: 20px; }
+@media (max-width: 900px) { .ds-grid { grid-template-columns: 1fr; } }
+
+.ds-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.ds-table th { text-align: left; color: var(--muted); font-weight: 500; background: var(--surface-2); padding: 8px 12px; }
+.ds-table td { padding: 8px 12px; border-top: 1px solid var(--border); vertical-align: top; }
+.ds-table .num { text-align: right; white-space: nowrap; }
+.ds-table tr:hover td { background: var(--surface-2); }
+.ds-group { font-weight: 600; white-space: nowrap; }
+
+.ds-chips { display: inline-flex; gap: 4px; }
+.ds-chip { font-size: 10px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.ds-chip.ring { color: var(--red); border-color: var(--red); }
+.ds-chip.lone { color: var(--text); border-color: var(--faint); }
+.ds-chip.held { color: var(--risk-medium); border-color: var(--risk-medium); margin-left: 6px; }
+.ds-ok { color: var(--text); }
+.ds-warn { color: var(--risk-medium); }
+
+.ds-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.ds-steps li { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; display: grid; gap: 4px; align-content: start; }
+.ds-steps li span:last-child { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.ds-step-n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; }
+
+.ds-limits { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
