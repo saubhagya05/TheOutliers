@@ -437,3 +437,6 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 /* Heading sits in the upper part of the screen instead of the exact centre; footer stays at the bottom. */
 .app:has(.landing-page) .landing-content { justify-content: flex-start; padding-top: clamp(32px, 11vh, 110px); }
 .landing-footer { margin-top: auto; }
+
+/* More breathing room between the landing heading and the dataset strip */
+.landing-page .picker { margin-top: clamp(24px, 6vh, 72px); }
