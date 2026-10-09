@@ -1,0 +1,26 @@
+import express from 'express';
+import cors from 'cors';
+import { config } from './config.js';
+import { errorHandler, notFound } from './lib/http.js';
+import { generalRouter } from './routes/general.js';
+import { ringsRouter } from './routes/rings.js';
+import { loneRouter } from './routes/lone.js';
+import { recordsRouter } from './routes/records.js';
+import { stressRouter } from './routes/stress.js';
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/api', generalRouter);
+app.use('/api/rings', ringsRouter);
+app.use('/api/lone', loneRouter);
+app.use('/api/records', recordsRouter);
+app.use('/api/stress-test', stressRouter);
+
+app.use('/api', (req, res, next) => next(notFound(`No route ${req.method} ${req.originalUrl}`)));
+app.use(errorHandler);
+
+app.listen(config.port, () => {
+  console.log(`API on http://localhost:${config.port}/api (mode: ${config.mock ? 'mock' : 'live, ML at ' + config.mlUrl})`);
+});
