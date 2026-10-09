@@ -33,7 +33,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 - Unique-ID baseline: catches **0** rings.
 - Throughput: 20,000 records in about 4–7 s; 200,000 records + 176,000 transfers in about 53 s.
 - **Public benchmark (Febrl2-4, real benchmark data with known duplicates):** matcher F1 0.994-0.998 (precision 0.997-1.0, recall 0.988-0.997); a unique-key check finds only 90-96% of duplicates. Threshold set on Febrl1 only.
-- Honest caveats: ring numbers are on our simulated ledger; Febrl is a well-known, fairly clean benchmark and has no father's name; money-flow detection has no public benchmark yet (IBM AML needs a Kaggle login).
+- Honest caveats: ring numbers are on our simulated ledger; Febrl is a well-known, fairly clean benchmark and has no father's name; IBM AML is also synthetic and has no identity data; fan-in alone is a weak signal there (precision 0.03).
 
 ---
 
@@ -54,7 +54,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 - ⬜ Persist flag/deflag decisions to a JSON file so a restart keeps them.
 - ⬜ Optional LLM rewrite of the case brief (key server-side only).
 - ✅ Public benchmark of the matcher on Febrl2-4 (`ml/benchmarks/febrl.py`), shown on the Dataset page.
-- ⬜ Optional: money-flow benchmark on IBM AML (needs the Kaggle CSV).
+- ✅ Public benchmark of the money-flow detectors on IBM AML (4.5M transfers): cycles 36/54 found, 45% of flagged cycles are laundering (30x random); fan-in alone 36/40 found but noisy (2.3x random).
 - ⬜ Help with integration and the demo script.
 
 **Blockers:** none.
@@ -119,6 +119,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 
 Newest first. One line per PR or milestone: `date · who · what`.
 
+- 2026-10-09 · Backend lead · Public benchmark on IBM AML (cycles 30x better than random, fan-in recall 0.90)
 - 2026-10-09 · Backend lead · Public benchmark on Febrl2-4 (matcher F1 0.994-0.998)
 - 2026-10-09 · Backend lead · ML pipeline + benchmark merged; live mode works end to end
 - 2026-10-09 · Backend lead · Dataset v2 (bias controls, transfers, test set); API v3; mock serves real data

@@ -502,7 +502,7 @@ Undo. Response: `{ "recordId": "B-000045", "status": "notFlagged", "manualOverri
   "scaleRun": { "records": 200000, "transfers": 176497, "seconds": 52.6, "recordsPerSecond": 3802 }
 }
 ```
-`simulatedLedger` = the held-out **test** set numbers (headline). `public` may be an empty array. `devSet`, `testSet` and `scaleRun` are optional; when present show `byRingType` (held-out types marked) and `scaleRun.recordsPerSecond` on the Dataset & Method page.
+`simulatedLedger` = the held-out **test** set numbers (headline). `public` may be an empty array. In `public`, `f1` may be `null` (IBM AML reports pattern recall and flag precision separately), and optional `liftOverRandom`, `patterns`, `found`, `note` may appear. `devSet`, `testSet` and `scaleRun` are optional; when present show `byRingType` (held-out types marked) and `scaleRun.recordsPerSecond` on the Dataset & Method page.
 
 ---
 

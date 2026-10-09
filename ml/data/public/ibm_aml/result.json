@@ -1,0 +1,40 @@
+{
+  "dataset": "IBM AML (HI-Small)",
+  "transfers": 4487133,
+  "publicHubs": 518,
+  "fanIn": {
+    "patterns": 40,
+    "found": 36,
+    "recall": 0.9,
+    "accountsFlagged": 42079,
+    "accountPrecision": 0.034,
+    "sinksBehindPublicHub": 0,
+    "seconds": 20.0,
+    "liftOverRandom": 2.3
+  },
+  "cycle": {
+    "patterns": 54,
+    "found": 36,
+    "recall": 0.667,
+    "cyclesFound": 6561,
+    "cyclePrecision": 0.454,
+    "patternsTouchingPublicHub": 1,
+    "giantComponent": {
+      "nodes": 16495,
+      "cyclesEnumerated": 2785,
+      "complete": false,
+      "seconds": 242.7
+    },
+    "seconds": 257.7,
+    "liftOverRandom": 30.2
+  },
+  "seconds": 306.5,
+  "settings": {
+    "MIN_SENDERS": 3,
+    "MAX_SENDERS": 30,
+    "windowHours": 24,
+    "cycleBound": 10
+  },
+  "accounts": 422734,
+  "launderingAccountRate": 0.015
+}

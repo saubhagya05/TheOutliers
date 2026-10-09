@@ -217,9 +217,31 @@
       "pairs": 5000,
       "baselineRecall": 0.956,
       "note": "Threshold set on Febrl1; this set was not used for tuning. Febrl has no father's name."
+    },
+    {
+      "dataset": "IBM AML (HI-Small)",
+      "component": "Collector / fan-in detection",
+      "precision": 0.034,
+      "recall": 0.9,
+      "f1": null,
+      "patterns": 40,
+      "found": 36,
+      "note": "Recall = labelled FAN-IN patterns whose collector was flagged; precision = flagged accounts involved in laundering. Same constants as the pipeline, not tuned.",
+      "liftOverRandom": 2.3
+    },
+    {
+      "dataset": "IBM AML (HI-Small)",
+      "component": "Cycle detection (kickbacks)",
+      "precision": 0.454,
+      "recall": 0.667,
+      "f1": null,
+      "patterns": 54,
+      "found": 36,
+      "note": "Recall = labelled CYCLE patterns matched by a detected cycle; precision = detected cycles made mostly of laundering accounts.",
+      "liftOverRandom": 30.2
     }
   ],
-  "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmark: the record-linkage matcher on Febrl2-4 (threshold chosen on Febrl1).",
+  "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmark: the record-linkage matcher on Febrl2-4 (threshold chosen on Febrl1). IBM AML: money-flow detectors with pipeline constants, no tuning.",
   "ranAt": "2026-10-09T12:43:36Z",
   "scaleRun": {
     "records": 200000,

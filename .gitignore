@@ -16,3 +16,5 @@ Thumbs.db
 *.log
 .claude/
 ml/data/scale/
+ml/data/public/ibm_aml/*.csv
+ml/data/public/ibm_aml/*.txt
