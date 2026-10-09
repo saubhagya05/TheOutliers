@@ -1,14 +1,7 @@
-
 import { useNavigate } from 'react-router-dom';
-import { getOverview, getBaseline } from '../../api/client.js';
-import { useApi } from '../../hooks/useApi.js';
-import StatStrip from './components/StatStrip.jsx';
-import BaselineStrip from './components/BaselineStrip.jsx';
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const overview = useApi(() => getOverview(), []);
-  const baseline = useApi(() => getBaseline(), []);
 
   return (
     <main className="landing-page">
@@ -82,26 +75,6 @@ export default function LandingPage() {
           </article>
         </section>
 
-        <section className="landing-metrics" aria-label="Detection metrics">
-          {overview.data && <StatStrip overview={overview.data} />}
-          {baseline.data && <BaselineStrip baseline={baseline.data} />}
-
-          {(overview.error || baseline.error) && (
-            <div className="landing-api-status" role="status">
-              <span>Some dashboard metrics are unavailable.</span>
-              {overview.error && (
-                <button className="landing-retry" onClick={overview.reload}>
-                  Retry overview
-                </button>
-              )}
-              {baseline.error && (
-                <button className="landing-retry" onClick={baseline.reload}>
-                  Retry baseline
-                </button>
-              )}
-            </div>
-          )}
-        </section>
 
         <footer className="landing-footer">
           <span>IDENTIFY PATTERNS. DETECT FRAUD.</span>
