@@ -15,10 +15,10 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 | Dataset + bias controls | Backend lead | ✅ | dev set + held-out test set, transfers for kickback cycles |
 | Express backend (mock + live) | Backend lead | ✅ | every endpoint works; flag/deflag in memory |
 | ML pipeline (FastAPI) | Backend lead | ✅ | rings, lone ghosts, money cycles, stress test, benchmarks |
-| Landing + Dataset & Method pages | Person A | ⬜ | |
-| Shared look (theme, nav, shared components) | Person A | ⬜ | basic versions exist and work |
-| Ring Threats page | Person B | ⬜ | basic list, detail and member table work; graph is a TODO box |
-| Lone Threats page | Person C | ⬜ | basic table, detail and search work; scatter is a TODO box |
+| Landing + Dataset & Method pages | Person A | 🟡 | Landing done (merged); StatStrip, BaselineStrip and Dataset page still TODO |
+| Shared look (theme, nav, shared components) | Person A | 🟡 | theme + nav merged; nav now has Home + Dataset only |
+| Ring Threats page | Person B | ✅ | constellation, list, detail, record drawer, case brief, baseline overlay, stress test, timeline merged |
+| Lone Threats page | Person C | 🟡 | point cloud, network graph, stats and charts merged; updated to API v3 signals |
 | End-to-end demo on live ML | Team | ⬜ | |
 | Pitch deck + demo script + backup video | Team | ⬜ | |
 
@@ -119,6 +119,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 
 Newest first. One line per PR or milestone: `date · who · what`.
 
+- 2026-10-09 · Backend lead · Merged all three frontend branches into main; fixed Lone page to API v3 names, moved Person A's uploaded files into frontend/src, fixed a CSS class clash
 - 2026-10-09 · Backend lead · Public benchmark on IBM AML (cycles 30x better than random, fan-in recall 0.90)
 - 2026-10-09 · Backend lead · Public benchmark on Febrl2-4 (matcher F1 0.994-0.998)
 - 2026-10-09 · Backend lead · ML pipeline + benchmark merged; live mode works end to end
