@@ -1,30 +1,44 @@
-.gate { max-width: 1040px; margin: 0 auto; display: grid; gap: 24px; padding-top: 12px; }
-.gate h1 { font-size: 32px; }
-.gate-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
-.gate-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px;
-  display: flex; flex-direction: column; gap: 12px; transition: border-color .15s;
+/* Small dataset section on the landing page */
+.picker {
+  width: min(100%, 860px); margin: 0 auto; display: grid; gap: 10px;
 }
-.gate-card:hover { border-color: var(--red); }
-.gate-card h2 { font-size: 22px; }
+.picker-row {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+}
+.picker-opt { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.picker-opt p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.picker-opt .btn { margin-top: auto; align-self: flex-start; font-size: 13px; padding: 7px 14px; }
+.picker-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+.picker-links { color: var(--muted); font-size: 11px; }
+.picker-links button { background: none; border: none; padding: 0; color: var(--text); text-decoration: underline; font-size: 11px; }
+.picker-or {
+  align-self: center; color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  border-left: 1px solid var(--border); border-right: 1px solid var(--border); padding: 0 14px; height: 100%;
+  display: grid; place-items: center;
+}
+.picker-file { display: grid; grid-template-columns: 88px 1fr; align-items: center; gap: 8px; font-size: 12px; }
+.picker-file em { color: var(--muted); font-style: normal; font-size: 11px; }
+.picker-file input { color: var(--muted); font: inherit; font-size: 11px; min-width: 0; }
+.picker-file input::file-selector-button {
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 8px; margin-right: 8px; cursor: pointer; font: inherit; font-size: 11px;
+}
+.picker-warn { color: var(--risk-medium); font-size: 11px; }
+@media (max-width: 700px) {
+  .picker-row { grid-template-columns: 1fr; }
+  .picker-or { border: none; padding: 0; height: auto; }
+}
+
+/* "Choose an analysis" title a little smaller than the landing title */
+.landing-eyebrow.analyse-title { font-size: clamp(28px, 4vw, 48px); }
+
+/* Bar above /analyse, /rings and /lone */
 .gate-tag {
-  align-self: flex-start; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--red);
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--red);
   border: 1px solid var(--red); border-radius: 999px; padding: 2px 9px;
 }
 .gate-tag.small { margin-left: 8px; font-size: 9px; padding: 1px 7px; }
-.gate-line { color: var(--muted); margin: 0; line-height: 1.6; }
-.gate-go { margin-top: auto; padding: 12px 16px; font-weight: 700; }
-.gate-file { display: grid; gap: 6px; font-size: 13px; }
-.gate-file em { color: var(--muted); font-style: normal; font-size: 12px; margin-left: 6px; }
-.gate-file input { color: var(--muted); font: inherit; font-size: 12px; }
-.gate-file input::file-selector-button {
-  background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px;
-  padding: 6px 10px; margin-right: 10px; cursor: pointer; font: inherit;
-}
-.gate-name { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font: inherit; }
-.gate-templates .btn { font-size: 12px; }
-.gate-warn { color: var(--risk-medium); font-size: 12px; margin: 0; }
-
 .gate-bar {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
   margin-bottom: 14px; padding: 8px 12px; font-size: 13px; color: var(--muted);
