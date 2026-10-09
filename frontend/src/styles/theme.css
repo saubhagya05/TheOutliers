@@ -74,7 +74,6 @@ table.data td.anomaly { color: var(--red); background: var(--red-soft); font-wei
 table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 
 
-```css
 /* Person A — compact landing page */
 
 

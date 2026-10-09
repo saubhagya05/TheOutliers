@@ -30,7 +30,7 @@ export default function LandingPage() {
         </section>
 
         <section className="landing-threats">
-          <article className="landing-threat-card ring-card">
+          <article className="landing-threat-card landing-ring">
             <div className="threat-visual-icon network-icon" aria-hidden="true">
               <svg viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="9" r="4" />
@@ -56,7 +56,7 @@ export default function LandingPage() {
             </button>
           </article>
 
-          <article className="landing-threat-card lone-card">
+          <article className="landing-threat-card landing-lone">
             <div className="threat-visual-icon scan-icon" aria-hidden="true">
               <svg viewBox="0 0 48 48" fill="none">
                 <path d="M17 7H12Q7 7 7 12V17M31 7H36Q41 7 41 12V17M7 31V36Q7 41 12 41H17M41 31V36Q41 41 36 41H31" />
