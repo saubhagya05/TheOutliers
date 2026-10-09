@@ -17,7 +17,7 @@ Build:
 - Click a point -> onSelect(recordId). Click empty space -> onSelect(null).
 - Selected point: brighten + pulse; dim all others.
 - Hover tooltip: recordId, riskScore, topSignal.
-- Optional legend: colour by topSignal instead of plain red.`}
+- Optional legend: colour by topSignal (invalidAadhaar, expiredAadhaar, invalidPhone, duplicatePhone, loginBruteforce).`}
       </Todo>
       <div className="row" style={{ marginTop: 12 }}>
         {flagged.slice(0, 8).map((p) => (

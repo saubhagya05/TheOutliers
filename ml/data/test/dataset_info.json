@@ -2,8 +2,8 @@
   "name": "Post-Matric Scholarship 2025-26 (simulated)",
   "simulated": true,
   "recordCount": 20000,
-  "transferCount": 17667,
-  "generatedAt": "2026-10-09T11:50:21Z",
+  "transferCount": 17536,
+  "generatedAt": "2026-10-09T11:50:25Z",
   "description": "Synthetic scholarship disbursement ledger plus post-payout money transfers. Names, addresses, phones, Aadhaar numbers (valid Verhoeff checksums) and bank details follow realistic Indian formats. Families, twins, CSC centres and college fee accounts create legitimate sharing. Ring and lone ghosts were planted afterwards with labels kept in a separate file the detector never reads.",
   "columnGroups": [
     {
@@ -142,7 +142,7 @@
     }
   ],
   "planted": {
-    "rings": 31,
+    "rings": 35,
     "ringTypes": [
       {
         "type": "account_funnel",
@@ -170,25 +170,25 @@
       },
       {
         "type": "phone_batch",
-        "count": 3,
+        "count": 4,
         "heldOut": false,
         "description": "Batch phone numbers paying into a shared account"
       },
       {
         "type": "address_cluster",
-        "count": 3,
+        "count": 4,
         "heldOut": false,
         "description": "Unrelated surnames at one address (with spelling variants) sharing an account"
       },
       {
         "type": "kickback_cycle",
-        "count": 3,
+        "count": 4,
         "heldOut": false,
         "description": "Members forward 60-90% of payouts to a collector; agents pay commissions back (money cycles)"
       },
       {
         "type": "slow_drip",
-        "count": 3,
+        "count": 4,
         "heldOut": true,
         "description": "Held out: same IP spread over days plus a shared address (weak signals only)"
       },
@@ -199,71 +199,71 @@
         "description": "Held out: name variants with the same DOB/father and batch phones, no shared money trail"
       }
     ],
-    "loneGhosts": 240,
+    "loneGhosts": 200,
     "loneTraits": {
-      "duplicate_phone": 48,
-      "expired_aadhaar": 66,
-      "invalid_aadhaar": 79,
-      "invalid_phone": 77,
+      "expired_aadhaar": 65,
+      "duplicate_phone": 44,
+      "invalid_aadhaar": 59,
+      "invalid_phone": 62,
       "login_bruteforce": 54
     },
     "hardNegatives": [
       {
         "type": "csc_shared_ip",
-        "count": 5783,
+        "count": 5752,
         "description": "Genuine applicants registering at a CSC centre (shared IP)"
       },
       {
         "type": "family_shared_address",
-        "count": 5338,
+        "count": 5368,
         "description": "Family members at one address"
       },
       {
         "type": "paid_college_fees",
-        "count": 4844,
+        "count": 4787,
         "description": "Students paying fees to a college account (legitimate fan-in of money)"
       },
       {
         "type": "family_shared_phone",
-        "count": 1998,
+        "count": 1892,
         "description": "Siblings using a parent's phone"
       },
       {
         "type": "family_shared_account",
-        "count": 669,
+        "count": 634,
         "description": "Siblings paid into a parent's account"
       },
       {
         "type": "twins",
-        "count": 444,
+        "count": 532,
         "description": "Twins: same DOB, father and address, often rhyming names"
       },
       {
+        "type": "forgetful_login",
+        "count": 47,
+        "description": "Genuine user with many failed logins over a longer window"
+      },
+      {
         "type": "aadhaar_pending_update",
-        "count": 43,
+        "count": 45,
         "description": "Genuine applicant whose Aadhaar is expired pending update"
       },
       {
         "type": "phone_typo",
-        "count": 39,
+        "count": 42,
         "description": "Genuine applicant with a mistyped phone number"
       },
       {
         "type": "aadhaar_typo",
-        "count": 37,
+        "count": 39,
         "description": "Genuine applicant whose Aadhaar was mistyped at data entry (checksum fails)"
-      },
-      {
-        "type": "forgetful_login",
-        "count": 35,
-        "description": "Genuine user with many failed logins over a longer window"
       }
     ]
   },
   "howCreated": [
     "Generated households of students with realistic names, DOBs, addresses, phones, Aadhaar numbers and bank accounts.",
     "Added legitimate look-alikes for every ghost signal: families, twins, CSC centres, college fee accounts, phone typos, expired-but-genuine Aadhaar, forgetful logins.",
-    "Planted 31 rings across 9 types and 240 lone ghosts with 5 trait types. Each ring signal is carried by only part of the ring, with gaps and cross-district members.",
+    "Planted 35 rings across 9 types and 200 lone ghosts with 5 trait types. Each ring signal is carried by only part of the ring, with gaps and cross-district members.",
     "Held two ring types (slow_drip, identity_reuse) out of tuning; a separate test set with a different seed and shifted sizes, noise and rates is used once for the reported numbers.",
     "Shuffled records and assigned IDs afterwards so order and IDs reveal nothing."
   ],

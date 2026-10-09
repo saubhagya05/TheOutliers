@@ -1,6 +1,6 @@
-// Serves the generated mock audit with the same interface as mlProvider.
-import { bundle, getRecord, searchRecords, buildBrief, stressScenarios, runStressTest } from '../mock/generate.js';
-import { datasetInfo, benchmarks } from '../mock/static.js';
+// Serves the oracle bundle + real ledger with the same interface as mlProvider.
+import { bundle, datasetInfo, getRecord, searchRecords, buildBrief, stressScenarios, runStressTest } from '../mock/data.js';
+import { benchmarks } from '../mock/static.js';
 
 export const mockProvider = {
   async health() {

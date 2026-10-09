@@ -4,7 +4,7 @@ import AnomalyTable from '../../../components/AnomalyTable.jsx';
 import StatusActions from '../../../components/StatusActions.jsx';
 import { setRecordStatus, clearRecordStatus } from '../../../api/client.js';
 
-const SIGNALS = ['', 'instantWithdrawal', 'newAccount', 'oddHourApplication', 'registryMismatch', 'areaAnomaly'];
+const SIGNALS = ['', 'invalidAadhaar', 'expiredAadhaar', 'invalidPhone', 'duplicatePhone', 'loginBruteforce', 'oddHourRegistration'];
 
 // TODO(lone): nicer filter chips with counts, risk level filter, toggle between table and card view.
 export default function LoneList({ data, signal, onSignalChange, onSelect, onChanged }) {

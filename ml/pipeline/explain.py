@@ -1,26 +1,27 @@
 """Step 6: explanations. Columns, red-cell anomalies and per-record detail.
 
-Column keys and labels must match backend/src/mock/generate.js COLUMNS so the frontend tables
-look the same in mock and live mode.
+Column keys, labels and the to_fields() mapping must match ml/data/build_mock_bundle.py (and
+backend/src/mock/data.js) so the frontend tables look the same in mock and live mode. Reuse them.
 """
 import pandas as pd
 
 COLUMNS = [
-    ("name", "Name", "text"), ("age", "Age", "number"), ("gender", "Gender", "text"),
-    ("phoneMasked", "Phone", "text"), ("address", "Address", "text"), ("district", "District", "text"),
-    ("pincode", "Pincode", "text"), ("aadhaarHash", "Aadhaar (hash)", "text"),
-    ("payoutAccount", "Payout account", "text"), ("ifsc", "IFSC", "text"),
-    ("transferredTo", "Funds moved to", "text"), ("agentId", "Agent", "text"),
-    ("deviceId", "OTP device", "text"), ("otpIp", "OTP IP", "text"),
-    ("accountOpenedAt", "Account opened", "datetime"), ("appliedAt", "Applied at", "datetime"),
-    ("payoutAt", "Paid at", "datetime"), ("amountInr", "Amount", "inr"),
-    ("minutesToWithdrawal", "Mins to withdraw", "number"), ("enrolledInRegistry", "In registry", "boolean"),
-    ("riskScore", "Risk", "risk"),
+    ("name", "Name", "text"), ("fatherName", "Father", "text"), ("spouseName", "Spouse", "text"),
+    ("gender", "Gender", "text"), ("dob", "DOB", "text"), ("age", "Age", "number"),
+    ("aadhaarMasked", "Aadhaar", "text"), ("aadhaarStatus", "Aadhaar status", "text"),
+    ("biometricHash", "Biometric", "text"), ("phoneMasked", "Phone", "text"), ("email", "Email", "text"),
+    ("address", "Address", "text"), ("district", "District", "text"), ("state", "State", "text"),
+    ("pincode", "Pincode", "text"), ("registrationIp", "Reg. IP", "text"),
+    ("registrationChannel", "Channel", "text"), ("registrationAt", "Registered", "datetime"),
+    ("appliedAt", "Applied", "datetime"), ("bankAccount", "Bank account", "text"), ("ifsc", "IFSC", "text"),
+    ("upiId", "UPI ID", "text"), ("payoutMode", "Payout mode", "text"), ("amountInr", "Amount", "inr"),
+    ("payoutAt", "Paid", "datetime"), ("loginFailed", "Failed logins", "number"),
+    ("loginWindowMinutes", "Login window (min)", "number"), ("riskScore", "Risk", "risk"),
 ]
-MEMBER_DEFAULTS = {"name", "phoneMasked", "address", "payoutAccount", "transferredTo", "agentId", "deviceId",
-                   "accountOpenedAt", "appliedAt", "amountInr", "minutesToWithdrawal", "riskScore"}
-LONE_DEFAULTS = {"name", "district", "payoutAccount", "accountOpenedAt", "appliedAt", "amountInr",
-                 "minutesToWithdrawal", "enrolledInRegistry", "riskScore"}
+MEMBER_DEFAULTS = {"name", "fatherName", "dob", "aadhaarMasked", "biometricHash", "phoneMasked", "email", "address",
+                   "registrationIp", "registrationAt", "bankAccount", "upiId", "amountInr", "riskScore"}
+LONE_DEFAULTS = {"name", "district", "aadhaarMasked", "aadhaarStatus", "phoneMasked", "registrationAt",
+                 "loginFailed", "loginWindowMinutes", "amountInr", "riskScore"}
 
 
 def _columns(defaults):

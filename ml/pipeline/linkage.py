@@ -2,8 +2,11 @@
 
 Plan:
 - Blocking: compare only within the same pincode / phone prefix / name initials.
-- Exact keys: payoutAccount, phone, deviceId, otpIp, agentId, address, transferredTo.
-- Fuzzy names: rapidfuzz Jaro-Winkler + jellyfish metaphone within a block.
+- Exact keys (ignore empty strings): bank_account_number, upi_id, biometric_hash, phone, registration_ip.
+- Near keys: phone numbers within 30 of each other (batch), email template (letters + digits @ same domain),
+  normalised address (pincode + town + house number).
+- Fuzzy names: rapidfuzz Levenshtein / Jaro-Winkler + jellyfish metaphone within a block; same dob + similar father.
+- Discount legitimate sharing: same surname + father (family), registration_channel == CSC for shared IPs.
 """
 import pandas as pd
 

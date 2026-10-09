@@ -28,7 +28,7 @@ export default function StressTestDrawer({ onClose }) {
         <Todo name="StressTest result">
           {`before ${result.before.ringsDetected} -> adapted ${result.adapted.ringsDetected} -> recovered ${result.recovered.ringsDetected}
 ${result.takeaway}
-Render: 3 big numbers with arrows, then per-ring bars (before / adapted / recovered).`}
+Render: 3 big numbers with arrows, then per-ring bars (before / adapted / recovered). Demo: All of the above.`}
         </Todo>
       )}
     </div>

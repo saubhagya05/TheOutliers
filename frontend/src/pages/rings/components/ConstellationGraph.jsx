@@ -16,8 +16,9 @@ Selected ring: ${selectedRingId || 'none'} | baselineView: ${baselineView}
 Build:
 - Black canvas. Background nodes (ringId null) = tiny faint grey stars.
 - Ring nodes coloured by data.rings[].color (map ringId -> color), soft glow.
-- Hub nodes (type account/phone/agent/device/address) slightly bigger, different shape or ring outline.
-- Edges thin, ring colour at low opacity.
+- Hub nodes (type account/upi/biometric/ip/phone/email/address) slightly bigger, different shape or ring outline.
+- Edges thin, ring colour at low opacity. Edges with type 'transfer' are money: draw arrows or moving
+  particles (linkDirectionalParticles) so collector fan-in and kickback cycles are visible.
 - Click a node -> onSelectRing(node.ringId). Click empty space -> onSelectRing(null).
 - When selectedRingId is set: that ring full brightness + zoomToFit on its nodes; everything else dimmed to ~10%.
 - status "deflagged" nodes: hollow grey.

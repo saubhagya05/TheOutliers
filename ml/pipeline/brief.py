@@ -18,7 +18,7 @@ def build_brief(ring: dict) -> dict:
         {"heading": "Shared items", "body": "\n".join(
             f"- {h['label']} ({h['type']}, linked to {h['linkedMembers']} members)" for h in ring["sharedEntities"]) or "None"},
         {"heading": "Members", "body": "\n".join(
-            f"- {m['recordId']} {m['fields']['name']}, {m['fields']['address']}, {m['fields']['payoutAccount']}"
+            f"- {m['recordId']} {m['fields']['name']}, {m['fields']['address']}, {m['fields']['bankAccount']}"
             for m in ring["members"])},
         {"heading": "Recommended action", "body": action},
     ]

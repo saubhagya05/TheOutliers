@@ -1,5 +1,6 @@
-"""Step 3: graph. Records and shared items (account, phone, agent, device, address) are nodes.
-Each shared attribute is an edge. Uses networkx."""
+"""Step 3: graph. Records and shared items (account, upi, biometric, ip, phone, email template, address) are nodes.
+Each shared attribute is an edge. Transfers (pipeline/load.load_transfers) add directed account -> account edges
+for collector fan-in and cycle detection (nx.simple_cycles on the money subgraph). Uses networkx."""
 import networkx as nx
 import pandas as pd
 

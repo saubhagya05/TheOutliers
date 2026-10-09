@@ -1,10 +1,10 @@
-# API Contracts (v2)
+# API Contracts (v3)
 
 Single source of truth for **Frontend <-> Express** and **Express <-> ML (FastAPI)**.
 
 **Change rule:** need a new field or endpoint? Ask the backend owner. Update this file first, announce it in the group chat, then code. Log it in the change table at the bottom.
 
-**Product:** detect **ring ghosts** (organised groups of fake or diverted beneficiaries linked by shared payout accounts, phones, agents, OTP devices, timing and money flow) and **lone ghosts** (single suspicious records found by behaviour). The dataset is pre-loaded, so there is no upload flow and no login.
+**Product:** detect **ring ghosts** (organised groups of fake or diverted beneficiaries linked by shared bank accounts / UPI IDs, biometrics, registration IPs, batch phones, templated emails, addresses, name variants and money cycles) and **lone ghosts** (single suspicious records found by behaviour). The dataset is pre-loaded, so there is no upload flow and no login.
 
 ---
 
@@ -25,11 +25,11 @@ All frontend calls already exist as functions in `frontend/src/api/client.js`. U
 
 - **Base URLs:** Express `http://localhost:5000/api`. ML `http://localhost:8000` (only Express calls ML). In the frontend, call relative `/api/...`; Vite proxies it to Express.
 - **Format:** JSON, **camelCase** keys.
-- **IDs:** rings `R-001`, records `B-000123`, accounts `A-0045`, phones `P-0099`, agents `AG-07`, devices `D-0312`, addresses `AD-0021`.
+- **IDs:** rings `R-001`, records `B-000123`. Hub nodes are `<TYPE>-<6 hex>`, e.g. `ACC-3f9a1c`, `UPI-…`, `BIO-…`, `IP-…`, `PHO-…`, `EMA-…`, `ADD-…`.
 - **Dates:** ISO 8601 UTC strings, e.g. `2026-09-27T10:15:00Z`.
 - **Money:** integers in INR. Field names end in `Inr`.
 - **Risk:** `riskScore` integer 0-100. `riskLevel`: `"low"` (<40), `"medium"` (40-69), `"high"` (70-100).
-- **Masking:** phones masked (`98XXXXXX21`), Aadhaar only as `aadhaarHash`. Never raw Aadhaar.
+- **Masking:** phones `6295XXXX81` (first 4 + last 2), Aadhaar `XXXX XXXX 6266`, bank accounts `SBI ****8341`, biometric hash first 10 chars. Never raw Aadhaar or full account numbers.
 - **Pagination:** `?page=1&pageSize=20` (default 1 / 20, max 100). Response: `{ "items": [], "page": 1, "pageSize": 20, "total": 134 }`.
 - **Sorting:** `?sort=<field>&order=desc|asc`.
 - **Status** (`status`) for rings and records:
@@ -48,21 +48,43 @@ All frontend calls already exist as functions in `frontend/src/api/client.js`. U
 
 **Reason** (why something was flagged; UI shows the top 3 as chips)
 ```json
-{ "signal": "sharedAccount", "label": "11 beneficiaries pay out to 2 bank accounts", "weight": 0.31 }
+{ "signal": "sharedAccount", "label": "8 members pay out to one shared bank account", "weight": 0.31 }
 ```
 `weight` = share of the score, 0-1.
 
-**Signal values:** `sharedAccount`, `sharedPhone`, `sharedAddress`, `similarName`, `sharedDevice`, `sharedAgent`, `timingBurst`, `moneyFlowCycle`, `collectorAccount`, `newAccount`, `instantWithdrawal`, `templatedId`, `oddHourApplication`, `areaAnomaly`, `registryMismatch`.
+**Signal values**
+
+| Signal | Kind | Red cell on field | Meaning |
+|---|---|---|---|
+| `sharedAccount` | ring | `bankAccount` | Same bank account as other members |
+| `sharedUpi` | ring | `upiId` | Same UPI ID as other members |
+| `sharedBiometric` | ring | `biometricHash` | Same biometric under different names |
+| `sharedIp` | ring | `registrationIp` | Registered from the same IP |
+| `registrationBurst` | ring | `registrationAt` | 3+ registrations from one IP within an hour |
+| `batchPhone` | ring | `phoneMasked` | Near-sequential phone numbers |
+| `sharedPhone` | ring | `phoneMasked` | Exactly the same phone |
+| `templatedEmail` | ring | `email` | `user326@`, `user327@` … on a disposable domain |
+| `sharedAddress` | ring | `address` | Same address (spelling variants normalised) |
+| `similarName` | ring | `name` | Near-duplicate name (Levenshtein + phonetic) |
+| `sameDobFather` | ring | `dob`, `fatherName` | Same DOB and father as other members |
+| `collectorAccount` | ring | `bankAccount` | Forwarded most of the payout to a collector account |
+| `kickbackCycle` | ring | `bankAccount` | Money came back from the collector's agents (cycle) |
+| `invalidAadhaar` | lone | `aadhaarMasked` | Fails Verhoeff checksum / format |
+| `expiredAadhaar` | lone | `aadhaarStatus` | Aadhaar expired or deactivated |
+| `invalidPhone` | lone | `phoneMasked` | Not a valid Indian mobile number |
+| `duplicatePhone` | lone | `phoneMasked` | Phone used by an unrelated record |
+| `loginBruteforce` | lone | `loginFailed` | Many failed logins quickly, then success |
+| `oddHourRegistration` | lone (weak) | `registrationAt` | Registered between midnight and 6 am |
 
 **Anomaly** (one red cell in a table: which column of which record is suspicious)
 ```json
-{ "field": "payoutAccount", "signal": "sharedAccount", "label": "Same account as 8 other members" }
+{ "field": "bankAccount", "signal": "sharedAccount", "label": "Same bank account as 7 other members" }
 ```
 `field` matches a column `key`. A record can have zero, one or many anomalies. **Render every cell whose column key appears in `anomalies` in red, with `label` as its tooltip.**
 
 **Column** (tables are driven by the API, so new columns need no frontend change)
 ```json
-{ "key": "payoutAccount", "label": "Payout account", "type": "text", "default": true }
+{ "key": "bankAccount", "label": "Bank account", "type": "text", "default": true }
 ```
 `type`: `text`, `number`, `inr`, `datetime`, `boolean`, `risk`. `default: false` columns are hidden until the user opens "More columns".
 
@@ -71,17 +93,20 @@ All frontend calls already exist as functions in `frontend/src/api/client.js`. U
 {
   "recordId": "B-000123",
   "fields": {
-    "name": "Rajesh Kumar", "age": 20, "gender": "M", "phoneMasked": "98XXXXXX21",
-    "address": "Ward 4, Rajgir", "district": "Nalanda", "pincode": "803116",
-    "aadhaarHash": "a91f…3c", "payoutAccount": "SBI ****4521", "ifsc": "SBIN0004521",
-    "agentId": "AG-07", "deviceId": "D-0312", "otpIp": "10.4.2.17",
-    "accountOpenedAt": "2025-08-10T00:00:00Z", "appliedAt": "2025-08-14T10:02:00Z",
-    "payoutAt": "2025-08-20T09:00:00Z", "amountInr": 90000, "minutesToWithdrawal": 7,
-    "enrolledInRegistry": true, "riskScore": 91
+    "name": "Sonam Jha", "fatherName": "Bhola Jha", "spouseName": null, "gender": "F", "dob": "2004-03-24", "age": 21,
+    "aadhaarMasked": "XXXX XXXX 6266", "aadhaarStatus": "active", "biometricHash": "8ab4798411",
+    "phoneMasked": "6295XXXX81", "email": "user327@mail7.in",
+    "address": "House 30, Ward 6, Islampur", "district": "Nalanda", "state": "Bihar", "pincode": "803171",
+    "registrationIp": "117.99.30.186", "registrationChannel": "self",
+    "registrationAt": "2025-08-13T17:35:38Z", "appliedAt": "2025-08-13T17:52:38Z",
+    "bankAccount": "SBI ****8341", "ifsc": "SBIN0841692", "upiId": null, "payoutMode": "DBT_BANK",
+    "amountInr": 36000, "payoutAt": "2025-09-15T09:00:00Z",
+    "loginFailed": 0, "loginWindowMinutes": 2, "riskScore": 91
   },
   "anomalies": [
-    { "field": "payoutAccount", "signal": "sharedAccount", "label": "Same account as 8 other members" },
-    { "field": "agentId", "signal": "sharedAgent", "label": "Agent filed all 14 applications" }
+    { "field": "registrationIp", "signal": "sharedIp", "label": "Same registration IP as 9 other members" },
+    { "field": "registrationAt", "signal": "registrationBurst", "label": "Registered within the same hour as 9 other members from one IP" },
+    { "field": "phoneMasked", "signal": "batchPhone", "label": "Phone number in a sequence with 6 other members" }
   ],
   "riskScore": 91,
   "riskLevel": "high",
@@ -95,12 +120,14 @@ All frontend calls already exist as functions in `frontend/src/api/client.js`. U
 ```json
 { "id": "B-000123", "type": "beneficiary", "label": "Rajesh Kumar", "ringId": "R-001", "riskScore": 91, "status": "flagged" }
 ```
-`type`: `beneficiary`, `account`, `phone`, `agent`, `device`, `address`. Non-beneficiary nodes are the shared "hub" items. `ringId` is `null` for background context nodes.
+`type`: `beneficiary`, `account` (incl. collector and agent accounts), `upi`, `biometric`, `ip`, `phone`, `email`, `address`. Non-beneficiary nodes are the shared "hub" items. `ringId` is `null` for background context nodes.
 
 **GraphEdge**
 ```json
-{ "source": "B-000123", "target": "A-0045", "type": "sharedAccount", "weight": 1.0 }
+{ "source": "B-000123", "target": "ACC-3f9a1c", "type": "sharedAccount", "weight": 1.0 }
+{ "source": "B-000123", "target": "ACC-77b2e0", "type": "transfer", "weight": 1.0, "amountInr": 30600 }
 ```
+`type` is a ring signal, or `transfer` for money movement (directed source -> target, with `amountInr`). Draw transfer edges with arrows or moving particles: collector fan-in and agent -> member edges show the kickback cycle.
 
 ---
 
@@ -119,7 +146,9 @@ Landing page numbers.
 ```json
 {
   "datasetName": "Post-Matric Scholarship 2025-26 (simulated)",
-  "recordsScanned": 48000,
+  "recordsScanned": 20000,
+  "transfersScanned": 17667,
+  "auditDurationSeconds": 4.2,
   "ringsFound": 14,
   "ringMembers": 212,
   "loneGhostsFound": 120,
@@ -130,7 +159,7 @@ Landing page numbers.
   "lastAuditAt": "2026-09-27T02:00:00Z"
 }
 ```
-Counts exclude anything `deflagged`. `ringsFound` counts rings with `riskScore >= 40` (low-risk rings stay visible on the Ring page but are not counted).
+`auditDurationSeconds` may be `null` (mock mode); when present show records/second (the "high-throughput" claim). Counts exclude anything `deflagged`. `ringsFound` counts rings with `riskScore >= 40` (low-risk rings stay visible on the Ring page but are not counted).
 
 #### GET /api/baseline
 "Unique-ID check vs. our system" comparison. Used on Landing (comparison strip) and Ring page (toggle).
@@ -166,11 +195,11 @@ Query: `includeContext` (`true|false`, default `true`), `contextNodes` (default 
 {
   "nodes": [
     { "id": "B-000123", "type": "beneficiary", "label": "Rajesh Kumar", "ringId": "R-001", "riskScore": 91, "status": "flagged" },
-    { "id": "A-0045", "type": "account", "label": "SBI ****4521", "ringId": "R-001", "riskScore": 91, "status": "flagged" },
+    { "id": "ACC-3f9a1c", "type": "account", "label": "SBI ****4521", "ringId": "R-001", "riskScore": 91, "status": "flagged" },
     { "id": "B-002201", "type": "beneficiary", "label": "Meena Kumari", "ringId": null, "riskScore": 4, "status": "notFlagged" }
   ],
   "edges": [
-    { "source": "B-000123", "target": "A-0045", "type": "sharedAccount", "weight": 1.0 }
+    { "source": "B-000123", "target": "ACC-3f9a1c", "type": "sharedAccount", "weight": 1.0 }
   ],
   "rings": [
     { "ringId": "R-001", "color": "#FF3B3B", "riskScore": 91, "riskLevel": "high", "memberCount": 14, "status": "flagged" }
@@ -202,8 +231,8 @@ Query: `minRisk`, `level` (`low|medium|high`), `status` (comma list, default all
       "priority": { "priorityScore": 88, "rank": 1, "recoverableInr": 1170000, "effort": "low" },
       "topReasons": [
         { "signal": "sharedAccount", "label": "14 beneficiaries pay out to 2 bank accounts", "weight": 0.34 },
-        { "signal": "timingBurst", "label": "All applied within 40 minutes", "weight": 0.22 },
-        { "signal": "sharedAgent", "label": "Agent AG-07 filed all applications", "weight": 0.18 }
+        { "signal": "registrationBurst", "label": "10 members registered within one hour from one IP", "weight": 0.22 },
+        { "signal": "collectorAccount", "label": "7 members forwarded most of their payout to one collector", "weight": 0.18 }
       ]
     }
   ],
@@ -230,30 +259,30 @@ Everything for the selected ring's detail panel and member table.
   "activeMemberCount": 13,
   "amountAtRiskInr": 1260000,
   "priority": { "priorityScore": 88, "rank": 1, "recoverableInr": 1170000, "effort": "low" },
-  "summary": "14 beneficiaries with different names and Aadhaar IDs receive payouts into two shared bank accounts. Agent AG-07 filed all applications within 40 minutes.",
+  "summary": "14 beneficiaries in Nalanda with different names and Aadhaar numbers are linked: 8 members pay out to one shared bank account; 10 registered within one hour from one IP. ₹12.6 lakh is at risk.",
   "reasons": [
     { "signal": "sharedAccount", "label": "14 beneficiaries pay out to 2 bank accounts", "weight": 0.34 }
   ],
   "signalBreakdown": [
     { "signal": "sharedAccount", "label": "Shared payout account", "value": 0.92 },
-    { "signal": "timingBurst", "label": "Application burst", "value": 0.88 },
-    { "signal": "sharedAgent", "label": "Same agent", "value": 0.81 }
+    { "signal": "registrationBurst", "label": "Registration burst", "value": 0.71 },
+    { "signal": "sharedIp", "label": "Same registration IP", "value": 0.71 }
   ],
   "columns": [
     { "key": "name", "label": "Name", "type": "text", "default": true },
-    { "key": "payoutAccount", "label": "Payout account", "type": "text", "default": true },
+    { "key": "bankAccount", "label": "Bank account", "type": "text", "default": true },
     { "key": "ifsc", "label": "IFSC", "type": "text", "default": false }
   ],
   "members": [ { "recordId": "B-000123", "fields": { "…": "see Record row" }, "anomalies": [], "riskScore": 91, "riskLevel": "high", "status": "flagged", "manualOverride": false, "note": null } ],
   "sharedEntities": [
-    { "id": "A-0045", "type": "account", "label": "SBI ****4521", "linkedMembers": 9 },
-    { "id": "AG-07", "type": "agent", "label": "Agent AG-07", "linkedMembers": 14 }
+    { "id": "ACC-3f9a1c", "type": "account", "label": "SBI ****4521", "linkedMembers": 9 },
+    { "id": "IP-91c2aa", "type": "ip", "label": "117.99.30.186", "linkedMembers": 10 }
   ],
   "graph": { "nodes": [], "edges": [] },
   "timeline": [
-    { "at": "2025-08-14T10:02:00Z", "event": "application", "recordId": "B-000123" },
-    { "at": "2025-08-20T09:00:00Z", "event": "payout", "recordId": "B-000123", "amountInr": 90000 },
-    { "at": "2025-08-20T09:07:00Z", "event": "withdrawal", "recordId": "B-000123", "amountInr": 90000 }
+    { "at": "2025-08-13T17:35:38Z", "event": "registration", "recordId": "B-000123" },
+    { "at": "2025-09-15T09:00:00Z", "event": "payout", "recordId": "B-000123", "amountInr": 36000 },
+    { "at": "2025-09-15T09:35:00Z", "event": "transfer", "recordId": "B-000123", "amountInr": 30600, "to": "Ext ****1250" }
   ]
 }
 ```
@@ -287,7 +316,7 @@ Request (optional): `{ "audience": "investigator" }`
     { "heading": "Summary", "body": "14 beneficiaries ... ₹12.6 lakh at risk." },
     { "heading": "Evidence", "body": "- 9 members share account SBI ****4521\n- ..." },
     { "heading": "Members", "body": "B-000123 Rajesh Kumar, ..." },
-    { "heading": "Recommended action", "body": "Freeze accounts A-0045 and A-0046 and verify agent AG-07." }
+    { "heading": "Recommended action", "body": "Hold payouts to and freeze SBI ****8341. Trace who registered from IP 117.99.30.186." }
   ],
   "markdown": "# Case brief: Ring R-001 ..."
 }
@@ -298,9 +327,9 @@ Request (optional): `{ "audience": "investigator" }`
 ```json
 {
   "scenarios": [
-    { "id": "freshAccounts", "label": "Ring opens a fresh account per member", "description": "Removes the shared-account signal." },
-    { "id": "spreadTiming", "label": "Ring spreads applications over 3 weeks", "description": "Removes the timing-burst signal." },
-    { "id": "freshDevices", "label": "Ring uses a new phone/device per member", "description": "Removes device and OTP signals." },
+    { "id": "freshAccounts", "label": "Ring opens a fresh bank account and UPI ID per member", "description": "Removes shared-account and shared-UPI signals." },
+    { "id": "spreadOut", "label": "Ring registers from different IPs over weeks", "description": "Removes shared-IP and burst signals." },
+    { "id": "freshContacts", "label": "Ring buys unrelated SIMs and real-looking emails", "description": "Removes batch-phone, shared-phone and templated-email signals." },
     { "id": "allAdaptations", "label": "All of the above", "description": "Worst case." }
   ]
 }
@@ -312,12 +341,12 @@ Request: `{ "scenario": "freshAccounts" }`
 {
   "scenario": "freshAccounts",
   "before":    { "ringsDetected": 14, "recall": 0.88 },
-  "adapted":   { "ringsDetected": 6,  "recall": 0.38, "lostSignals": ["sharedAccount"] },
-  "recovered": { "ringsDetected": 11, "recall": 0.69, "signalsUsed": ["sharedAgent", "timingBurst", "collectorAccount"] },
+  "adapted":   { "ringsDetected": 6,  "recall": 0.38, "lostSignals": ["sharedAccount", "sharedUpi"] },
+  "recovered": { "ringsDetected": 11, "recall": 0.69, "signalsUsed": ["sharedBiometric", "collectorAccount", "registrationBurst"] },
   "rings": [
     { "ringId": "R-001", "before": 91, "adapted": 52, "recovered": 78, "detectedAfter": true }
   ],
-  "takeaway": "Removing shared accounts drops detection to 6 rings; agent, timing and money-flow signals recover 11."
+  "takeaway": "Adapting drops detection from 14 to 6 rings; the remaining signals (sharedBiometric, collectorAccount, registrationBurst) recover 11."
 }
 ```
 
@@ -331,13 +360,13 @@ Query: `includeNormal` (default `true`), `normalSample` (default 600, max 3000),
 ```json
 {
   "points": [
-    { "recordId": "B-004211", "x": 0.86, "y": 0.14, "riskScore": 78, "riskLevel": "high", "flagged": true, "status": "flagged", "topSignal": "instantWithdrawal" },
+    { "recordId": "B-004211", "x": 0.86, "y": 0.14, "riskScore": 78, "riskLevel": "high", "flagged": true, "status": "flagged", "topSignal": "loginBruteforce" },
     { "recordId": "B-000045", "x": 0.41, "y": 0.52, "riskScore": 6, "riskLevel": "low", "flagged": false, "status": "notFlagged", "topSignal": null }
   ],
   "axes": { "x": "Behaviour projection 1", "y": "Behaviour projection 2" }
 }
 ```
-x and y are normalised 0-1. Flagged points: large, glowing red. Normal: small, faint. Selected: brighten, dim the rest.
+x and y are normalised 0-1 (in mock mode the angle groups points by top signal). Flagged points: large, glowing red. Normal: small, faint. Selected: brighten, dim the rest.
 
 #### GET /api/lone
 Ranked list / table of lone ghosts.
@@ -348,13 +377,14 @@ Query: `minRisk`, `level`, `status` (comma list, default all: `flagged,confirmed
   "items": [
     {
       "recordId": "B-004211",
-      "fields": { "name": "Asha Devi", "district": "Gaya", "amountInr": 45000, "accountOpenedAt": "2025-08-11T00:00:00Z", "minutesToWithdrawal": 6, "riskScore": 78 },
+      "fields": { "name": "Asha Devi", "district": "Gaya", "aadhaarMasked": "XXXX XXXX 0417", "aadhaarStatus": "active", "loginFailed": 11, "loginWindowMinutes": 9, "registrationAt": "2025-08-02T01:53:10Z", "amountInr": 25000, "riskScore": 78 },
       "anomalies": [
-        { "field": "minutesToWithdrawal", "signal": "instantWithdrawal", "label": "Full amount withdrawn 6 minutes after payout" },
-        { "field": "accountOpenedAt", "signal": "newAccount", "label": "Account opened 3 days before applying" }
+        { "field": "aadhaarMasked", "signal": "invalidAadhaar", "label": "Aadhaar number fails the Verhoeff checksum or format check" },
+        { "field": "loginFailed", "signal": "loginBruteforce", "label": "11 failed logins in 9 min, then success" },
+        { "field": "registrationAt", "signal": "oddHourRegistration", "label": "Registered at 01:53 at night" }
       ],
       "topReasons": [
-        { "signal": "instantWithdrawal", "label": "Full amount withdrawn 6 minutes after payout", "weight": 0.35 }
+        { "signal": "invalidAadhaar", "label": "Aadhaar number fails the Verhoeff checksum or format check", "weight": 0.3 }
       ],
       "riskScore": 78, "riskLevel": "high", "status": "flagged", "manualOverride": false, "note": null
     }
@@ -362,7 +392,7 @@ Query: `minRisk`, `level`, `status` (comma list, default all: `flagged,confirmed
   "page": 1, "pageSize": 20, "total": 120
 }
 ```
-Items use the **Record row** shape plus `topReasons`. Records flagged manually by a human also appear here with `manualOverride: true`.
+Items use the **Record row** shape plus `topReasons`. Records flagged manually by a human also appear here with `manualOverride: true`. Expect some genuine people here (a mistyped phone or Aadhaar): that is what deflag is for.
 
 #### GET /api/records/:recordId
 Full detail for **any** record (lone point, ring member, or unflagged record). Used by the Lone detail panel and by "View full record" in the Ring member table.
@@ -372,11 +402,14 @@ Full detail for **any** record (lone point, ring member, or unflagged record). U
   "fields": { "…": "all fields, see Record row" },
   "anomalies": [],
   "columns": [ { "key": "name", "label": "Name", "type": "text", "default": true } ],
-  "reasons": [ { "signal": "instantWithdrawal", "label": "Full amount withdrawn 6 minutes after payout", "weight": 0.35 } ],
+  "reasons": [ { "signal": "loginBruteforce", "label": "11 failed logins in 9 min, then success", "weight": 0.28 } ],
   "features": [
-    { "key": "accountAgeDays", "label": "Account age at application (days)", "value": 3, "typical": 640, "anomalous": true },
-    { "key": "minutesToWithdrawal", "label": "Minutes from payout to withdrawal", "value": 6, "typical": 4300, "anomalous": true },
-    { "key": "appliedHour", "label": "Hour of application", "value": 3, "typical": 14, "anomalous": true }
+    { "key": "loginFailed", "label": "Failed logins before success", "value": 11, "typical": 0, "anomalous": true },
+    { "key": "loginWindowMinutes", "label": "Login window (minutes)", "value": 9, "typical": 3, "anomalous": true },
+    { "key": "phoneSharedWith", "label": "Other records with this phone", "value": 0, "typical": 0, "anomalous": false },
+    { "key": "accountSharedWith", "label": "Other records paid to this account", "value": 0, "typical": 0, "anomalous": false },
+    { "key": "ipSharedWith", "label": "Other records registered from this IP", "value": 0, "typical": 0, "anomalous": false },
+    { "key": "registrationHour", "label": "Hour of registration (UTC)", "value": 1, "typical": 14, "anomalous": true }
   ],
   "kind": "lone",
   "ringId": null,
@@ -416,20 +449,22 @@ Undo. Response: `{ "recordId": "B-000045", "status": "notFlagged", "manualOverri
 {
   "name": "Post-Matric Scholarship 2025-26 (simulated)",
   "simulated": true,
-  "recordCount": 48000,
+  "recordCount": 20000,
+  "transferCount": 17667,
   "generatedAt": "2026-09-26T18:00:00Z",
   "description": "Synthetic welfare ledger. Names, addresses and phones follow realistic Indian distributions. Fraud was planted afterwards with known labels.",
   "columnGroups": [
     {
       "group": "Identity",
-      "columns": [ { "name": "name", "usedFor": ["ring", "lone"], "description": "Applicant name (fuzzy + phonetic matching)" } ]
+      "columns": [ { "name": "full_name, father_name, spouse_name", "usedFor": ["ring"], "description": "Levenshtein + phonetic matching for name variants" } ]
     }
   ],
   "planted": {
-    "rings": 16,
-    "ringTypes": [ { "type": "sharedAccount", "count": 5, "description": "Many identities paying out to a few accounts" } ],
-    "loneGhosts": 130,
-    "hardNegatives": [ { "type": "families", "count": 300, "description": "Real families sharing one address" } ]
+    "rings": 31,
+    "ringTypes": [ { "type": "kickback_cycle", "count": 3, "heldOut": false, "description": "Members forward 60-90% of payouts to a collector; agents pay commissions back" } ],
+    "loneGhosts": 240,
+    "loneTraits": { "invalid_aadhaar": 70, "expired_aadhaar": 69 },
+    "hardNegatives": [ { "type": "twins", "count": 444, "description": "Twins: same DOB, father and address, often rhyming names" } ]
   },
   "howCreated": [ "Generated base population from realistic name, address and pincode distributions." ],
   "pipeline": [
@@ -486,9 +521,12 @@ Shapes below reuse section 2 shapes, **minus** `status`, `manualOverride`, `note
 ```json
 {
   "auditId": "AUD-001",
+  "oracle": false,
   "finishedAt": "2026-09-27T02:01:12Z",
   "datasetName": "Post-Matric Scholarship 2025-26 (simulated)",
-  "recordsScanned": 48000,
+  "recordsScanned": 20000,
+  "transfersScanned": 17667,
+  "auditDurationSeconds": 4.2,
   "memberColumns": [ { "key": "name", "label": "Name", "type": "text", "default": true } ],
   "loneColumns":   [ { "key": "name", "label": "Name", "type": "text", "default": true } ],
   "rings": [ { "…": "GET /api/rings/:ringId shape, without Express-added fields" } ],
@@ -506,7 +544,7 @@ ML errors use the same error shape. Express maps any ML failure to `502 ML_UNAVA
 
 ## 4. Modes
 
-- `MOCK=true` in `backend/.env` (default): Express generates realistic mock data in memory (`backend/src/mock/generate.js`) with the exact shapes above. Frontend can build everything against it.
+- `MOCK=true` in `backend/.env` (default): Express serves `backend/src/mock/bundle.json` plus the real `ml/data/ledger.csv`. The bundle is an **oracle** built from the ground truth by `ml/data/build_mock_bundle.py` (`"oracle": true`): real rows, perfect labels. For UI work only, never for metrics.
 - `MOCK=false`: Express pulls the bundle from ML (`ML_URL`). Same responses, real data.
 
 ---
@@ -517,3 +555,4 @@ ML errors use the same error shape. Express maps any ML failure to `502 ML_UNAVA
 |---|---|---|---|
 | 2026-09-27 | all | v1 created | backend |
 | 2026-10-09 | all | v2: red anomaly cells (`anomalies`, `columns`), member deflag, ring colours, baseline, priority, case brief, stress test, single ML bundle | backend |
+| 2026-10-09 | all | v3: field keys and signals match the final dataset (Aadhaar, biometric, IP, UPI, email, login, transfers); `transfer` edges; new record features; stress scenario ids; `transfersScanned`, `auditDurationSeconds`, `oracle` | backend |

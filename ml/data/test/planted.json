@@ -1,20 +1,20 @@
 {
-  "profile": "dev",
+  "profile": "test",
   "rows": 20000,
-  "seed": 7,
-  "generatedAt": "2026-10-09T11:50:21Z",
+  "seed": 11,
+  "generatedAt": "2026-10-09T11:50:25Z",
   "labels": {
-    "normal": 19354,
-    "ring": 406,
-    "lone": 240
+    "normal": 19294,
+    "ring": 506,
+    "lone": 200
   },
-  "transfers": 17667,
-  "rings": 31,
+  "transfers": 17536,
+  "rings": 35,
   "ringTypes": [
     {
       "type": "account_funnel",
       "count": 4,
-      "members": 47,
+      "members": 55,
       "signals": [
         "shared_account",
         "shared_ip_burst"
@@ -24,7 +24,7 @@
     {
       "type": "upi_collector",
       "count": 4,
-      "members": 63,
+      "members": 64,
       "signals": [
         "shared_upi",
         "templated_email"
@@ -34,7 +34,7 @@
     {
       "type": "biometric_clone",
       "count": 4,
-      "members": 61,
+      "members": 82,
       "signals": [
         "shared_biometric",
         "name_variant",
@@ -45,7 +45,7 @@
     {
       "type": "ip_farm",
       "count": 4,
-      "members": 41,
+      "members": 51,
       "signals": [
         "shared_ip_burst",
         "batch_phone",
@@ -55,8 +55,8 @@
     },
     {
       "type": "phone_batch",
-      "count": 3,
-      "members": 45,
+      "count": 4,
+      "members": 68,
       "signals": [
         "batch_phone",
         "shared_account"
@@ -65,8 +65,8 @@
     },
     {
       "type": "address_cluster",
-      "count": 3,
-      "members": 49,
+      "count": 4,
+      "members": 56,
       "signals": [
         "shared_address",
         "shared_account",
@@ -76,8 +76,8 @@
     },
     {
       "type": "kickback_cycle",
-      "count": 3,
-      "members": 43,
+      "count": 4,
+      "members": 36,
       "signals": [
         "collector_transfer",
         "kickback_cycle",
@@ -87,8 +87,8 @@
     },
     {
       "type": "slow_drip",
-      "count": 3,
-      "members": 22,
+      "count": 4,
+      "members": 52,
       "signals": [
         "shared_ip_slow",
         "shared_address"
@@ -98,7 +98,7 @@
     {
       "type": "identity_reuse",
       "count": 3,
-      "members": 35,
+      "members": 42,
       "signals": [
         "name_variant",
         "same_dob_father",
@@ -111,76 +111,76 @@
     {
       "ringId": "RING-001",
       "type": "account_funnel",
-      "size": 10,
+      "size": 19,
       "signals": [
         "shared_account",
         "shared_ip_burst"
       ],
       "heldOut": false,
-      "district": "Patna"
+      "district": "Ranchi"
     },
     {
       "ringId": "RING-002",
       "type": "upi_collector",
-      "size": 14,
+      "size": 24,
       "signals": [
         "shared_upi",
         "templated_email"
       ],
       "heldOut": false,
-      "district": "Lucknow"
+      "district": "Varanasi"
     },
     {
       "ringId": "RING-003",
       "type": "biometric_clone",
-      "size": 18,
+      "size": 20,
       "signals": [
         "shared_biometric",
         "name_variant",
         "same_dob_father"
       ],
       "heldOut": false,
-      "district": "Indore"
+      "district": "Gorakhpur"
     },
     {
       "ringId": "RING-004",
       "type": "ip_farm",
-      "size": 13,
+      "size": 9,
       "signals": [
         "shared_ip_burst",
         "batch_phone",
         "templated_email"
       ],
       "heldOut": false,
-      "district": "Patna"
+      "district": "Varanasi"
     },
     {
       "ringId": "RING-005",
       "type": "phone_batch",
-      "size": 18,
+      "size": 25,
       "signals": [
         "batch_phone",
         "shared_account"
       ],
       "heldOut": false,
-      "district": "Patna"
+      "district": "Darbhanga"
     },
     {
       "ringId": "RING-006",
       "type": "address_cluster",
-      "size": 17,
+      "size": 16,
       "signals": [
         "shared_address",
         "shared_account",
         "name_variant"
       ],
       "heldOut": false,
-      "district": "Gaya"
+      "district": "Dhanbad"
     },
     {
       "ringId": "RING-007",
       "type": "kickback_cycle",
-      "size": 14,
+      "size": 12,
       "signals": [
         "collector_transfer",
         "kickback_cycle",
@@ -192,18 +192,18 @@
     {
       "ringId": "RING-008",
       "type": "slow_drip",
-      "size": 7,
+      "size": 5,
       "signals": [
         "shared_ip_slow",
         "shared_address"
       ],
       "heldOut": true,
-      "district": "Indore"
+      "district": "Dhanbad"
     },
     {
       "ringId": "RING-009",
       "type": "identity_reuse",
-      "size": 7,
+      "size": 25,
       "signals": [
         "name_variant",
         "same_dob_father",
@@ -215,168 +215,64 @@
     {
       "ringId": "RING-010",
       "type": "account_funnel",
-      "size": 12,
+      "size": 9,
       "signals": [
         "shared_account",
         "shared_ip_burst"
       ],
       "heldOut": false,
-      "district": "Patna"
+      "district": "Lucknow"
     },
     {
       "ringId": "RING-011",
       "type": "upi_collector",
-      "size": 14,
+      "size": 13,
       "signals": [
         "shared_upi",
-        "templated_email"
-      ],
-      "heldOut": false,
-      "district": "Patna"
-    },
-    {
-      "ringId": "RING-012",
-      "type": "biometric_clone",
-      "size": 17,
-      "signals": [
-        "shared_biometric",
-        "name_variant",
-        "same_dob_father"
-      ],
-      "heldOut": false,
-      "district": "Lucknow"
-    },
-    {
-      "ringId": "RING-013",
-      "type": "ip_farm",
-      "size": 7,
-      "signals": [
-        "shared_ip_burst",
-        "batch_phone",
         "templated_email"
       ],
       "heldOut": false,
       "district": "Gorakhpur"
     },
     {
-      "ringId": "RING-014",
-      "type": "phone_batch",
-      "size": 15,
-      "signals": [
-        "batch_phone",
-        "shared_account"
-      ],
-      "heldOut": false,
-      "district": "Jaipur"
-    },
-    {
-      "ringId": "RING-015",
-      "type": "address_cluster",
-      "size": 14,
-      "signals": [
-        "shared_address",
-        "shared_account",
-        "name_variant"
-      ],
-      "heldOut": false,
-      "district": "Varanasi"
-    },
-    {
-      "ringId": "RING-016",
-      "type": "kickback_cycle",
-      "size": 14,
-      "signals": [
-        "collector_transfer",
-        "kickback_cycle",
-        "batch_phone"
-      ],
-      "heldOut": false,
-      "district": "Varanasi"
-    },
-    {
-      "ringId": "RING-017",
-      "type": "slow_drip",
-      "size": 7,
-      "signals": [
-        "shared_ip_slow",
-        "shared_address"
-      ],
-      "heldOut": true,
-      "district": "Muzaffarpur"
-    },
-    {
-      "ringId": "RING-018",
-      "type": "identity_reuse",
-      "size": 18,
-      "signals": [
-        "name_variant",
-        "same_dob_father",
-        "batch_phone"
-      ],
-      "heldOut": true,
-      "district": "Darbhanga"
-    },
-    {
-      "ringId": "RING-019",
-      "type": "account_funnel",
-      "size": 12,
-      "signals": [
-        "shared_account",
-        "shared_ip_burst"
-      ],
-      "heldOut": false,
-      "district": "Lucknow"
-    },
-    {
-      "ringId": "RING-020",
-      "type": "upi_collector",
-      "size": 18,
-      "signals": [
-        "shared_upi",
-        "templated_email"
-      ],
-      "heldOut": false,
-      "district": "Nalanda"
-    },
-    {
-      "ringId": "RING-021",
+      "ringId": "RING-012",
       "type": "biometric_clone",
-      "size": 12,
+      "size": 16,
       "signals": [
         "shared_biometric",
         "name_variant",
         "same_dob_father"
       ],
       "heldOut": false,
-      "district": "Darbhanga"
+      "district": "Patna"
     },
     {
-      "ringId": "RING-022",
+      "ringId": "RING-013",
       "type": "ip_farm",
-      "size": 8,
+      "size": 17,
       "signals": [
         "shared_ip_burst",
         "batch_phone",
         "templated_email"
       ],
       "heldOut": false,
-      "district": "Jaipur"
+      "district": "Ranchi"
     },
     {
-      "ringId": "RING-023",
+      "ringId": "RING-014",
       "type": "phone_batch",
-      "size": 12,
+      "size": 6,
       "signals": [
         "batch_phone",
         "shared_account"
       ],
       "heldOut": false,
-      "district": "Muzaffarpur"
+      "district": "Nalanda"
     },
     {
-      "ringId": "RING-024",
+      "ringId": "RING-015",
       "type": "address_cluster",
-      "size": 18,
+      "size": 16,
       "signals": [
         "shared_address",
         "shared_account",
@@ -386,27 +282,131 @@
       "district": "Patna"
     },
     {
-      "ringId": "RING-025",
+      "ringId": "RING-016",
       "type": "kickback_cycle",
-      "size": 15,
+      "size": 4,
       "signals": [
         "collector_transfer",
         "kickback_cycle",
         "batch_phone"
       ],
       "heldOut": false,
-      "district": "Lucknow"
+      "district": "Muzaffarpur"
     },
     {
-      "ringId": "RING-026",
+      "ringId": "RING-017",
       "type": "slow_drip",
-      "size": 8,
+      "size": 17,
       "signals": [
         "shared_ip_slow",
         "shared_address"
       ],
       "heldOut": true,
-      "district": "Darbhanga"
+      "district": "Jaipur"
+    },
+    {
+      "ringId": "RING-018",
+      "type": "identity_reuse",
+      "size": 7,
+      "signals": [
+        "name_variant",
+        "same_dob_father",
+        "batch_phone"
+      ],
+      "heldOut": true,
+      "district": "Ranchi"
+    },
+    {
+      "ringId": "RING-019",
+      "type": "account_funnel",
+      "size": 17,
+      "signals": [
+        "shared_account",
+        "shared_ip_burst"
+      ],
+      "heldOut": false,
+      "district": "Gorakhpur"
+    },
+    {
+      "ringId": "RING-020",
+      "type": "upi_collector",
+      "size": 15,
+      "signals": [
+        "shared_upi",
+        "templated_email"
+      ],
+      "heldOut": false,
+      "district": "Lucknow"
+    },
+    {
+      "ringId": "RING-021",
+      "type": "biometric_clone",
+      "size": 24,
+      "signals": [
+        "shared_biometric",
+        "name_variant",
+        "same_dob_father"
+      ],
+      "heldOut": false,
+      "district": "Lucknow"
+    },
+    {
+      "ringId": "RING-022",
+      "type": "ip_farm",
+      "size": 20,
+      "signals": [
+        "shared_ip_burst",
+        "batch_phone",
+        "templated_email"
+      ],
+      "heldOut": false,
+      "district": "Dhanbad"
+    },
+    {
+      "ringId": "RING-023",
+      "type": "phone_batch",
+      "size": 17,
+      "signals": [
+        "batch_phone",
+        "shared_account"
+      ],
+      "heldOut": false,
+      "district": "Gorakhpur"
+    },
+    {
+      "ringId": "RING-024",
+      "type": "address_cluster",
+      "size": 7,
+      "signals": [
+        "shared_address",
+        "shared_account",
+        "name_variant"
+      ],
+      "heldOut": false,
+      "district": "Gorakhpur"
+    },
+    {
+      "ringId": "RING-025",
+      "type": "kickback_cycle",
+      "size": 4,
+      "signals": [
+        "collector_transfer",
+        "kickback_cycle",
+        "batch_phone"
+      ],
+      "heldOut": false,
+      "district": "Jaipur"
+    },
+    {
+      "ringId": "RING-026",
+      "type": "slow_drip",
+      "size": 10,
+      "signals": [
+        "shared_ip_slow",
+        "shared_address"
+      ],
+      "heldOut": true,
+      "district": "Ranchi"
     },
     {
       "ringId": "RING-027",
@@ -418,34 +418,34 @@
         "batch_phone"
       ],
       "heldOut": true,
-      "district": "Lucknow"
+      "district": "Ranchi"
     },
     {
       "ringId": "RING-028",
       "type": "account_funnel",
-      "size": 13,
+      "size": 10,
       "signals": [
         "shared_account",
         "shared_ip_burst"
       ],
       "heldOut": false,
-      "district": "Indore"
+      "district": "Ranchi"
     },
     {
       "ringId": "RING-029",
       "type": "upi_collector",
-      "size": 17,
+      "size": 12,
       "signals": [
         "shared_upi",
         "templated_email"
       ],
       "heldOut": false,
-      "district": "Gorakhpur"
+      "district": "Ranchi"
     },
     {
       "ringId": "RING-030",
       "type": "biometric_clone",
-      "size": 14,
+      "size": 22,
       "signals": [
         "shared_biometric",
         "name_variant",
@@ -457,34 +457,80 @@
     {
       "ringId": "RING-031",
       "type": "ip_farm",
-      "size": 13,
+      "size": 5,
       "signals": [
         "shared_ip_burst",
         "batch_phone",
         "templated_email"
       ],
       "heldOut": false,
-      "district": "Muzaffarpur"
+      "district": "Varanasi"
+    },
+    {
+      "ringId": "RING-032",
+      "type": "phone_batch",
+      "size": 20,
+      "signals": [
+        "batch_phone",
+        "shared_account"
+      ],
+      "heldOut": false,
+      "district": "Ranchi"
+    },
+    {
+      "ringId": "RING-033",
+      "type": "address_cluster",
+      "size": 17,
+      "signals": [
+        "shared_address",
+        "shared_account",
+        "name_variant"
+      ],
+      "heldOut": false,
+      "district": "Nalanda"
+    },
+    {
+      "ringId": "RING-034",
+      "type": "kickback_cycle",
+      "size": 16,
+      "signals": [
+        "collector_transfer",
+        "kickback_cycle",
+        "batch_phone"
+      ],
+      "heldOut": false,
+      "district": "Lucknow"
+    },
+    {
+      "ringId": "RING-035",
+      "type": "slow_drip",
+      "size": 20,
+      "signals": [
+        "shared_ip_slow",
+        "shared_address"
+      ],
+      "heldOut": true,
+      "district": "Lucknow"
     }
   ],
-  "loneGhosts": 240,
+  "loneGhosts": 200,
   "loneTraits": {
-    "duplicate_phone": 48,
-    "expired_aadhaar": 66,
-    "invalid_aadhaar": 79,
-    "invalid_phone": 77,
+    "expired_aadhaar": 65,
+    "duplicate_phone": 44,
+    "invalid_aadhaar": 59,
+    "invalid_phone": 62,
     "login_bruteforce": 54
   },
   "hardNegatives": {
-    "csc_shared_ip": 5783,
-    "paid_college_fees": 4844,
-    "family_shared_address": 5338,
-    "family_shared_phone": 1998,
-    "twins": 444,
-    "family_shared_account": 669,
-    "aadhaar_pending_update": 43,
-    "forgetful_login": 35,
-    "phone_typo": 39,
-    "aadhaar_typo": 37
+    "family_shared_address": 5368,
+    "paid_college_fees": 4787,
+    "csc_shared_ip": 5752,
+    "family_shared_phone": 1892,
+    "family_shared_account": 634,
+    "twins": 532,
+    "phone_typo": 42,
+    "aadhaar_typo": 39,
+    "forgetful_login": 47,
+    "aadhaar_pending_update": 45
   }
 }

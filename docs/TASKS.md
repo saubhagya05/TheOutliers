@@ -98,7 +98,8 @@ Page state already wired in `RingsPage.jsx`: `selectedRingId`, `sort`, `baseline
 1. **`ConstellationGraph`** with `react-force-graph-2d` (installed). `graphData={{ nodes: data.nodes, links: data.edges }}`.
    - Black canvas, background nodes (`ringId === null`) are tiny faint grey stars.
    - Each ring has its own colour (`data.rings[].color`, map `ringId` → colour), soft glow, so the rings read as different-coloured constellations.
-   - Hub nodes (`type` account/phone/agent/device/address) slightly bigger with an outline.
+   - Hub nodes (`type` account/upi/biometric/ip/phone/email/address) slightly bigger with an outline.
+   - Edges with `type: 'transfer'` are money (with `amountInr`): draw arrows or moving particles so the collector fan-in and the **kickback cycle** (collector → agents → back to members) are visible. This is the "cycle detection" moment from the problem statement.
    - Click a node → `onSelectRing(node.ringId)`, click the background → `onSelectRing(null)`.
    - **Selected ring brightens, everything else dims to ~10%**, and the camera zooms to fit that ring.
    - `status: 'deflagged'` nodes are drawn hollow and grey.
@@ -118,7 +119,7 @@ Page state already wired in `RingsPage.jsx`: `selectedRingId`, `sort`, `baseline
 
 ### Star (build last)
 7. **`StressTestDrawer`:** scenario buttons, then 3 big numbers (before → adapted → recovered) and per-ring bars. Use **All of the above** in the demo; it shows the biggest drop.
-8. **Timeline** of applications, payouts and withdrawals for the selected ring (`ring.timeline`).
+8. **Timeline** of registrations, payouts and transfers for the selected ring (`ring.timeline`).
 
 **Done when:** you can click a ring in the graph, see it light up, read why, inspect members with red cells, remove a wrong member, deflag/confirm the ring, and print a case brief.
 
@@ -146,7 +147,7 @@ Page state already wired in `LonePage.jsx`: `selectedId`, `signal`, `refreshAll(
    - **Selected point brightens and pulses, the rest dim.**
    - `deflagged` = hollow grey, `confirmed` = solid red with white outline.
    - Hover tooltip: record id, risk, top signal.
-2. **`LoneList`** (basic version works): `AnomalyTable` with red cells, signal filter chips with counts, risk level filter, row click → detail, per-row Confirm / Deflag / Undo.
+2. **`LoneList`** (basic version works): `AnomalyTable` with red cells, signal filter chips with counts (`invalidAadhaar`, `expiredAadhaar`, `invalidPhone`, `duplicatePhone`, `loginBruteforce`, `oddHourRegistration`), risk level filter, row click → detail, per-row Confirm / Deflag / Undo. Some flagged people are genuine (typos): deflag must feel natural.
 3. **`LoneDetailPanel`** (basic version works):
    - Header: name, record id, risk badge, kind, status.
    - Reason chips.
@@ -170,8 +171,8 @@ Page state already wired in `LonePage.jsx`: `selectedId`, `signal`, `refreshAll(
 Express already serves every endpoint in mock mode (`MOCK=true`), with in-memory overrides (no DB). Your job is to swap the mock for real ML output without changing any response shape.
 
 ### Must (in order)
-1. **Hour 0:** push this scaffold, confirm all three frontend people run it, and answer contract questions. Any contract change goes to `docs/API.md` first, then `client.js`, then the mock (`backend/src/mock/generate.js`), and gets announced in the chat.
-2. **Dataset:** generate `ml/data/ledger.csv` (columns in `ml/data/README.md`) with planted rings, lone ghosts and hard negatives. Keep ground truth in separate columns; `pipeline/load.py` drops them. Also write `ml/data/dataset_info.json`.
+1. **Hour 0:** push this scaffold, confirm all three frontend people run it, and answer contract questions. Any contract change goes to `docs/API.md` first, then `client.js`, then the mock (`ml/data/build_mock_bundle.py` -> `backend/src/mock/bundle.json`), and gets announced in the chat.
+2. **Dataset (done):** `python ml/data/generate_dataset.py` (dev) and `--profile test` (held-out test set). `python ml/data/build_mock_bundle.py` rebuilds the mock bundle after any dataset change. Tune on dev only; run the test set once for the reported numbers.
 3. **ML pipeline** (`ml/pipeline/`), each module has its target shape in the docstring:
    - `linkage.py`: blocking, exact keys, fuzzy and phonetic names.
    - `graph.py`: networkx graph, plus `context_nodes`.

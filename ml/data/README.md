@@ -1,19 +1,30 @@
 # Data
 
-Regenerate everything (stdlib only, about 2 seconds):
+Regenerate everything (stdlib only, a few seconds), from the repo root:
 ```bash
-python ml/data/generate_dataset.py                    # 20,000 rows, seed 7
-python ml/data/generate_dataset.py --rows 50000 --seed 11
+python ml/data/generate_dataset.py                    # dev set (seed 7): tune here      -> ml/data/
+python ml/data/generate_dataset.py --profile test     # test set (seed 11, shifted)      -> ml/data/test/
+python ml/data/generate_dataset.py --rows 200000 --out ml/data/scale   # throughput run (do not commit)
+python ml/data/build_mock_bundle.py                   # rebuild backend/src/mock/bundle.json after any dev change
 ```
 
 | File | Who reads it |
 |---|---|
 | `ledger.csv` | The detector (`pipeline/load.py`). No labels. |
-| `truth.csv` | **Only** the benchmark script. Never the detector. |
+| `transfers.csv` | The detector (`pipeline/load.load_transfers`): money moved after payout, for collector and cycle detection. |
+| `truth.csv` | **Only** the benchmark script and `build_mock_bundle.py`. Never the detector. |
 | `planted.json` | Summary of planted rings, lone ghosts and hard negatives. |
 | `dataset_info.json` | Served as `GET /api/dataset` (Dataset & Method page). |
+| `test/` | Same files for the held-out test set. **Tune on dev, run test once**, report the test numbers. |
 
 All identities are synthetic. Aadhaar numbers are fake but carry valid Verhoeff checksums, so checksum validation is meaningful.
+
+## Bias controls
+- **Legitimate look-alikes for every signal:** families (shared address, phone, account), twins (same DOB, father, address, rhyming names), CSC centres (shared IP), college fee accounts (legit fan-in of money), genuine phone typos, Aadhaar typos (checksum fails), expired-but-genuine Aadhaar, forgetful logins. No single rule separates ghosts from genuine people.
+- **Noisy rings:** each signal is carried by only 60-95% of a ring (50-85% in test), sequences have gaps, some members live in other districts.
+- **Held-out ring types** (`slow_drip`, `identity_reuse`) and a **shifted test set** (different seed, ring sizes, noise and rates).
+- **No ID leakage:** records are shuffled before IDs are assigned; shop payments go to everyone, ghosts included.
+- **Still a simulation:** name lists and typo rules are hand-made, not real distributions. Validate the matcher on public data (Febrl / NCVR) too.
 
 ## `ledger.csv` columns
 
@@ -49,7 +60,10 @@ Empty strings mean "not provided". **Ignore empty values when looking for shared
 ## `truth.csv` columns
 `beneficiary_id, label (normal | ring | lone), ring_id, ring_type, ghost_traits, hard_negative, held_out, household_id`
 
-## What is planted (default run)
-- **33 rings, 409 members, 8 types.** `account_funnel`, `upi_collector`, `biometric_clone`, `ip_farm`, `phone_batch` and `address_cluster` are used for tuning. **`slow_drip` and `identity_reuse` are held out**: do not tune on them; they test generalisation.
-- **240 lone ghosts**, each with 1-2 traits: `invalid_aadhaar`, `expired_aadhaar`, `invalid_phone`, `duplicate_phone`, `login_bruteforce`.
-- **Hard negatives** (legitimate, must NOT be flagged): families sharing address / phone / account, CSC centres sharing an IP, forgetful users with 5-7 failed logins over a long window.
+## `transfers.csv` columns
+`transfer_id, from_account, to_account, amount_inr, ts, channel (UPI | IMPS | NEFT)`. Accounts are full account numbers; beneficiary accounts match `ledger.bank_account_number`, others are external (collectors, agents, colleges, shops).
+
+## What is planted (dev run)
+- **31 rings, 406 members, 9 types.** `account_funnel`, `upi_collector`, `biometric_clone`, `ip_farm`, `phone_batch`, `address_cluster` and `kickback_cycle` are used for tuning. **`slow_drip` and `identity_reuse` are held out**: do not tune on them.
+- **240 lone ghosts**, each with 1-2 traits: `invalid_aadhaar`, `expired_aadhaar`, `invalid_phone`, `duplicate_phone`, `login_bruteforce`. Ghosts also register at odd hours and skip email more often (weak correlates).
+- **Hard negatives** (legitimate, must NOT be flagged): see Bias controls. Counts per type are in `planted.json`.

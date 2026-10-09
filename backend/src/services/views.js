@@ -3,11 +3,17 @@
 import { provider } from '../providers/index.js';
 import { getOverride, recordOverrides } from './overrides.js';
 
-// Distinct, bright colours that read well on the black canvas. Index = ring order from ML.
-export const RING_COLORS = [
-  '#FF3B3B', '#FF8A3D', '#FFD23F', '#3DDC97', '#3AB0FF', '#9B6BFF', '#FF5FC1', '#00E5FF',
-  '#C6FF3D', '#FF6F61', '#B0B7FF', '#7CFFCB', '#FFA8E2', '#8AE1FC', '#F4A261', '#E9C46A',
-];
+// Distinct, bright colours on the black canvas for any number of rings: golden-angle hue steps from red.
+function hslToHex(h, sat, light) {
+  const a = sat * Math.min(light, 1 - light);
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const c = light - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(c * 255).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+export const ringColor = (index) => hslToHex((index * 137.508) % 360, 0.9, index % 2 ? 0.66 : 0.58);
 
 export function recordState(recordId, defaultStatus) {
   const o = getOverride('record', recordId);
@@ -32,7 +38,7 @@ function ringDetailView(ring, index) {
   const memberStatus = new Map(members.map((m) => [m.recordId, m.status]));
   return {
     ...ring,
-    color: RING_COLORS[index % RING_COLORS.length],
+    color: ringColor(index),
     ...state,
     activeMemberCount: active.length,
     amountAtRiskInr: active.reduce((s, m) => s + (m.fields.amountInr || 0), 0),

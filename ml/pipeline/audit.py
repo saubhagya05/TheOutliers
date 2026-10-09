@@ -24,6 +24,8 @@ def run_audit(audit_id: str) -> dict:
         "finishedAt": None,  # app.py fills status times; keep for shape parity
         "datasetName": load.DATASET_NAME,
         "recordsScanned": int(len(df)),
+        "transfersScanned": None,       # TODO(ml): len(load.load_transfers())
+        "auditDurationSeconds": None,   # TODO(ml): time the run; the UI shows records/second
         "memberColumns": explain.member_columns(),
         "loneColumns": explain.lone_columns(),
         "rings": ring_list,

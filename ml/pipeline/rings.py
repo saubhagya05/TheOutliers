@@ -2,9 +2,10 @@
 
 Plan:
 - Connected components on the graph, then networkx louvain_communities to split big ones.
-- Cycle detection (nx.simple_cycles on a directed money-flow graph) and fan-in to collector accounts.
-- Burst detection: sliding 60-minute window per agent / device.
-- Ring risk = 0.30 link strength + 0.20 size/density + 0.20 signal diversity + 0.15 money flow + 0.15 timing.
+- Cycle detection (nx.simple_cycles on the transfers graph) and fan-in to collector accounts. College fee accounts
+  are legitimate fan-in: require fast forwarding (minutes/hours after payout) of a large share of the payout.
+- Burst detection: 3+ registrations from one IP within 60 minutes (CSC IPs spread over weeks are legitimate).
+- Ring risk = weighted signal coverage (see RING_WEIGHTS in ml/data/build_mock_bundle.py as a starting point).
 - Priority = recoverable INR per investigation effort.
 """
 import networkx as nx

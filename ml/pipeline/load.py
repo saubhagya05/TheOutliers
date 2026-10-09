@@ -3,7 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "ledger.csv"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_PATH = DATA_DIR / "ledger.csv"
 DATASET_NAME = "Post-Matric Scholarship 2025-26 (simulated)"
 
 
@@ -17,4 +18,11 @@ def load_ledger() -> pd.DataFrame:
     for col in ("registration_ts", "application_ts", "payout_ts"):
         df[col] = pd.to_datetime(df[col], utc=True)
     df["dob"] = pd.to_datetime(df["dob"])
+    return df
+
+
+def load_transfers() -> pd.DataFrame:
+    """Post-payout money movements: transfer_id, from_account, to_account, amount_inr, ts, channel."""
+    df = pd.read_csv(DATA_DIR / "transfers.csv", dtype={"from_account": str, "to_account": str})
+    df["ts"] = pd.to_datetime(df["ts"], utc=True)
     return df

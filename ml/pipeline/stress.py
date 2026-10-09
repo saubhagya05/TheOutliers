@@ -1,16 +1,16 @@
 """Star feature: "what if fraudsters adapt". Re-score rings with some signals removed."""
 
 SCENARIOS = [
-    {"id": "freshAccounts", "label": "Ring opens a fresh account per member", "description": "Removes the shared-account signal."},
-    {"id": "spreadTiming", "label": "Ring spreads applications over 3 weeks", "description": "Removes the timing-burst signal."},
-    {"id": "freshDevices", "label": "Ring uses a new phone/device per member", "description": "Removes device and phone signals."},
+    {"id": "freshAccounts", "label": "Ring opens a fresh bank account and UPI ID per member", "description": "Removes shared-account and shared-UPI signals."},
+    {"id": "spreadOut", "label": "Ring registers from different IPs over weeks", "description": "Removes shared-IP and burst signals."},
+    {"id": "freshContacts", "label": "Ring buys unrelated SIMs and real-looking emails", "description": "Removes batch-phone, shared-phone and templated-email signals."},
     {"id": "allAdaptations", "label": "All of the above", "description": "Worst case."},
 ]
 LOST = {
-    "freshAccounts": ["sharedAccount"],
-    "spreadTiming": ["timingBurst"],
-    "freshDevices": ["sharedDevice", "sharedPhone"],
-    "allAdaptations": ["sharedAccount", "timingBurst", "sharedDevice", "sharedPhone"],
+    "freshAccounts": ["sharedAccount", "sharedUpi"],
+    "spreadOut": ["sharedIp", "registrationBurst"],
+    "freshContacts": ["batchPhone", "sharedPhone", "templatedEmail"],
+    "allAdaptations": ["sharedAccount", "sharedUpi", "sharedIp", "registrationBurst", "batchPhone", "sharedPhone", "templatedEmail"],
 }
 
 
