@@ -1,0 +1,537 @@
+
+.lone-page {
+  --lone-bg: #06111b;
+  --lone-panel: #091925;
+  --lone-border: #1b3a4e;
+  --lone-text: #edf4fc;
+  --lone-muted: #9aafc2;
+  --lone-red: var(--red, #ff454f);
+  --lone-orange: var(--orange, #ff8a35);
+  --lone-yellow: var(--yellow, #f4c84a);
+  --lone-blue: var(--blue, #83a9d6);
+
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  color: var(--lone-text);
+}
+
+.lone-page *,
+.lone-page *::before,
+.lone-page *::after {
+  box-sizing: border-box;
+}
+
+.lone-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.lone-page-heading h1 {
+  margin: 0;
+  font-size: clamp(24px, 2vw, 32px);
+}
+
+.lone-page-heading p,
+.lone-section-heading p {
+  margin: 6px 0 0;
+  color: var(--lone-muted);
+  font-size: 14px;
+}
+
+.lone-page-search {
+  min-width: 240px;
+  max-width: 360px;
+}
+
+.lone-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.lone-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--lone-border);
+  border-radius: 12px;
+  background: var(--lone-panel);
+}
+
+.lone-stat-icon {
+  display: grid;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--lone-bg);
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.lone-stat-card > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.lone-stat-card strong {
+  font-size: 25px;
+  line-height: 1.1;
+}
+
+.lone-stat-card span:not(.lone-stat-icon) {
+  font-size: 13px;
+}
+
+.lone-stat-card small {
+  color: var(--lone-muted);
+  font-size: 11px;
+}
+
+.stat-red {
+  border-color: color-mix(in srgb, var(--lone-red) 35%, var(--lone-border));
+}
+
+.stat-red .lone-stat-icon,
+.stat-red strong {
+  color: var(--lone-red);
+}
+
+.stat-orange .lone-stat-icon,
+.stat-orange strong {
+  color: var(--lone-orange);
+}
+
+.stat-blue .lone-stat-icon,
+.stat-blue strong {
+  color: var(--lone-blue);
+}
+
+.lone-top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+  align-items: stretch;
+  gap: 16px;
+  min-width: 0;
+}
+
+.lone-map-panel,
+.lone-chart-card,
+.lone-expandable {
+  min-width: 0;
+  border: 1px solid var(--lone-border);
+  border-radius: 12px;
+  background: var(--lone-panel);
+}
+
+.lone-map-panel {
+  overflow: hidden;
+  padding: 12px;
+}
+
+.lone-map-panel > * {
+  min-width: 0;
+}
+
+.lone-map-panel > section {
+  width: 100%;
+  max-width: 100%;
+  border: 0 !important;
+  border-radius: 8px !important;
+}
+
+.lone-insights-column {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+
+.lone-chart-card {
+  padding: 16px;
+}
+
+.lone-chart-card h3 {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.lone-risk-chart {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.9fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.lone-donut {
+  display: grid;
+  width: min(100%, 150px);
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.lone-donut-hole {
+  display: flex;
+  width: 62%;
+  aspect-ratio: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--lone-panel);
+}
+
+.lone-donut-hole strong {
+  font-size: 23px;
+}
+
+.lone-donut-hole span {
+  color: var(--lone-muted);
+  font-size: 11px;
+}
+
+.lone-chart-legend {
+  display: grid;
+  gap: 12px;
+}
+
+.lone-legend-row {
+  display: grid;
+  grid-template-columns: 9px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.lone-legend-row strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.lone-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.lone-signal-bars {
+  display: grid;
+  gap: 13px;
+}
+
+.lone-signal-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(50px, 1.2fr) 24px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.lone-signal-row > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lone-signal-row strong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lone-bar-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--lone-bg);
+}
+
+.lone-bar {
+  height: 100%;
+  min-width: 0;
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.lone-chart-note {
+  margin: 14px 0 0;
+  color: var(--lone-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.lone-bottom-section {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.lone-section-heading h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.lone-tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 10px;
+}
+
+.lone-expandable {
+  overflow: hidden;
+}
+
+.lone-expandable.is-open {
+  grid-column: 1 / -1;
+  border-color: var(--lone-red);
+}
+
+.lone-expandable-trigger {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--lone-text);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.lone-expandable-trigger:hover,
+.lone-expandable.is-open .lone-expandable-trigger {
+  background: color-mix(in srgb, var(--lone-red) 7%, transparent);
+}
+
+.lone-expandable-trigger:focus-visible {
+  outline: 2px solid var(--lone-red);
+  outline-offset: -3px;
+}
+
+.lone-expandable-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.lone-expandable-icon {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--lone-bg);
+  color: var(--lone-blue);
+  font-size: 20px;
+}
+
+.lone-expandable.is-open .lone-expandable-icon {
+  color: var(--lone-red);
+}
+
+.lone-chevron {
+  flex: 0 0 auto;
+  color: var(--lone-muted);
+  font-size: 23px;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.lone-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.lone-expandable-content {
+  padding: 16px;
+  border-top: 1px solid var(--lone-border);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.lone-expandable-content .lone-chart-card {
+  max-width: 100%;
+}
+
+.lone-empty {
+  margin: 0;
+  padding: 20px;
+  color: var(--lone-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 1000px) {
+  .lone-top-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lone-insights-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+  }
+
+  .lone-tabs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lone-expandable.is-open {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .lone-summary-grid,
+  .lone-insights-column,
+  .lone-tabs-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lone-page-search {
+    width: 100%;
+    max-width: none;
+  }
+
+  .lone-risk-chart {
+    grid-template-columns: 110px minmax(0, 1fr);
+  }
+
+  .lone-donut {
+    width: 110px;
+  }
+
+  .lone-stat-card {
+    padding: 12px;
+  }
+
+  .lone-expandable.is-open {
+    grid-column: auto;
+  }
+}
+
+
+/* Compact the upper section so the investigation panels are easier to reach. */
+.lone-page {
+  gap: 14px;
+}
+
+.lone-summary-grid {
+  gap: 10px;
+}
+
+.lone-stat-card {
+  padding: 12px 16px;
+}
+
+.lone-top-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 12px;
+}
+
+.lone-map-panel {
+  padding: 8px;
+}
+
+/* Keep the point cloud from making the upper section excessively tall. */
+.lone-map-panel svg {
+  max-height: 400px;
+}
+
+/* Make the two right-side chart cards more compact. */
+.lone-insights-column {
+  gap: 12px;
+}
+
+.lone-chart-card {
+  padding: 12px;
+}
+
+.lone-chart-card h3 {
+  margin-bottom: 10px;
+}
+
+.lone-signal-bars {
+  gap: 9px;
+}
+
+/* Keep the four investigation panels in one row when space allows. */
+.lone-tabs-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.lone-expandable-trigger {
+  min-height: 54px;
+  padding: 10px;
+}
+
+.lone-expandable-title {
+  font-size: 12px;
+}
+
+/* An expanded panel spans the full width below the four tab headers. */
+.lone-expandable.is-open {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1000px) {
+  .lone-top-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lone-map-panel svg {
+    max-height: none;
+  }
+
+  .lone-tabs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .lone-tabs-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* Lone Threat Network Graph */
+.lone-network-panel {
+  min-width: 0;
+  min-height: 560px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--lone-border);
+  border-radius: 12px;
+  background: #202b3b;
+}
+
+.lone-network-panel > div {
+  width: 100%;
+  min-width: 0;
+}
+
+.lone-network-panel canvas {
+  display: block;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .lone-network-panel {
+    min-height: 450px;
+  }
+}
