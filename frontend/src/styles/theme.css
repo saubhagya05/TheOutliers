@@ -431,3 +431,5 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 @media (max-width: 700px) {
   .landing-eyebrow { font-size: clamp(26px, 8vw, 36px); letter-spacing: 0.04em; }
 }
+
+.landing-eyebrow span { color: var(--red); }

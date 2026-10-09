@@ -8,14 +8,8 @@ export default function LandingPage() {
       <div className="landing-content">
         <section className="landing-hero">
           <span className="landing-eyebrow">
-            WELFARE FRAUD DETECTION
+            WELFARE <span>FRAUD</span> DETECTION
           </span>
-
-<h1>
-  Find the <span>FRAUD</span> others <span>MISS.</span>
-</h1>
-
-
           <p>
             Uncover hidden fraud networks. Detect suspicious beneficiaries.
             Look beyond ordinary identity checks.
