@@ -11,7 +11,7 @@ Source of truth for the Dataset section of the app and the pitch deck. Numbers c
 - **Lone ghosts: F1 0.91** (precision 0.93, recall 0.89) on the held-out test set.
 - **Validated on public data:** our record-linkage matcher scores **F1 0.994–0.998 on Febrl**, a standard public benchmark, on sets never used for tuning. A plain unique-key check misses 4–10% of the same duplicates.
 - **Money-flow detection on real public AML data (IBM, 4.5 million transfers):** our cycle detector found **36 of 54** labelled laundering cycles, and **45% of the cycles it flags are real laundering**, about **30x better than random**. No tuning on this data.
-- **High throughput:** 200,000 records + 176,000 money transfers audited in **53 seconds** on a laptop (about 3,800 records/second).
+- **High throughput:** 200,000 records + 176,000 money transfers audited in **under 80 seconds** on a laptop (53 s on an idle machine, 77 s with the app running; 2,600-3,800 records/second).
 
 ---
 
@@ -106,7 +106,8 @@ A planted ring counts as found when one reported ring (risk ≥ 40) contains at 
 | Run | Records | Transfers | Time | Records / second |
 |---|---|---|---|---|
 | Standard | 20,000 | 17,536 | 3.5 s | 5,714 |
-| Scale test | 200,000 | 176,497 | 52.6 s | 3,802 |
+| Scale test (idle laptop) | 200,000 | 176,497 | 52.6 s | 3,802 |
+| Scale test (app running alongside) | 200,000 | 176,497 | 77.1 s | 2,595 |
 
 ## 5. Public benchmark: Febrl
 

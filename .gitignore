@@ -18,3 +18,4 @@ Thumbs.db
 ml/data/scale/
 ml/data/public/ibm_aml/*.csv
 ml/data/public/ibm_aml/*.txt
+ml/data/uploads/

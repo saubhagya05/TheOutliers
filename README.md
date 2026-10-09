@@ -38,7 +38,7 @@ Held-out test set: rings P 0.97 / R 1.0 (35/35, both held-out ring types found),
 
 Public benchmark (`pip install recordlinkage`, then `python ml/benchmarks/febrl.py`): the record-linkage matcher on Febrl2-4
 (threshold chosen on Febrl1 only) scores F1 0.994-0.998, versus 0.95-0.98 for a plain unique-key check.
-Throughput: 200,000 records + 176,000 transfers in about 53 s on a laptop.
+Throughput: 200,000 records + 176,000 transfers in 53-77 s on a laptop (77 s with the app running alongside).
 
 ## Detection pipeline (`ml/pipeline/`)
 1. **Linkage** (`linkage.py`): exact hubs (account, UPI, biometric, phone), IP burst windows, sorted-neighbourhood

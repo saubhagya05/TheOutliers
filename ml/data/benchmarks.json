@@ -98,8 +98,8 @@
     "throughput": {
       "records": 20000,
       "transfers": 17536,
-      "seconds": 3.5,
-      "recordsPerSecond": 5714
+      "seconds": 8.02,
+      "recordsPerSecond": 2494
     }
   },
   "devSet": {
@@ -183,8 +183,8 @@
     "throughput": {
       "records": 20000,
       "transfers": 17667,
-      "seconds": 3.48,
-      "recordsPerSecond": 5747
+      "seconds": 7.6,
+      "recordsPerSecond": 2632
     }
   },
   "public": [
@@ -242,11 +242,11 @@
     }
   ],
   "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmark: the record-linkage matcher on Febrl2-4 (threshold chosen on Febrl1). IBM AML: money-flow detectors with pipeline constants, no tuning.",
-  "ranAt": "2026-10-09T12:43:36Z",
+  "ranAt": "2026-10-09T16:51:57Z",
   "scaleRun": {
     "records": 200000,
     "transfers": 176497,
-    "seconds": 52.6,
-    "recordsPerSecond": 3802
+    "seconds": 77.07,
+    "recordsPerSecond": 2595
   }
 }

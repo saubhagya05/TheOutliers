@@ -31,7 +31,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 
 - Both held-out ring types (`slow_drip`, `identity_reuse`) found.
 - Unique-ID baseline: catches **0** rings.
-- Throughput: 20,000 records in about 4–7 s; 200,000 records + 176,000 transfers in about 53 s.
+- Throughput: 20,000 records in about 4–7 s; 200,000 records + 176,000 transfers in 53-77 s depending on laptop load.
 - **Public benchmark (Febrl2-4, real benchmark data with known duplicates):** matcher F1 0.994-0.998 (precision 0.997-1.0, recall 0.988-0.997); a unique-key check finds only 90-96% of duplicates. Threshold set on Febrl1 only.
 - Honest caveats: ring numbers are on our simulated ledger; Febrl is a well-known, fairly clean benchmark and has no father's name; IBM AML is also synthetic and has no identity data; fan-in alone is a weak signal there (precision 0.03).
 

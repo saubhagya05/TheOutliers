@@ -504,6 +504,18 @@ Undo. Response: `{ "recordId": "B-000045", "status": "notFlagged", "manualOverri
 ```
 `simulatedLedger` = the held-out **test** set numbers (headline). `public` may be an empty array. In `public`, `f1` may be `null` (IBM AML reports pattern recall and flag precision separately), and optional `liftOverRandom`, `patterns`, `found`, `note` may appear. `devSet`, `testSet` and `scaleRun` are optional; when present show `byRingType` (held-out types marked) and `scaleRun.recordsPerSecond` on the Dataset & Method page.
 
+### 2.5 Dataset choice (shown before the Ring and Lone pages)
+
+| Method & path | Purpose |
+|---|---|
+| `GET /api/datasets/active` | `{ dataset, status, error, canUpload }`. `dataset` = `{ id, source: "builtin" or "upload", name, recordCount, transferCount, description }` (description = one line for the chooser). `canUpload` is false in mock mode. |
+| `POST /api/datasets/builtin` | Use our dataset. Returns `{ dataset, status: "done" }` once detection has finished. |
+| `POST /api/datasets/upload` | Body `{ name, ledgerCsv, transfersCsv }` (file contents as text; transfers optional). Columns must match `ml/data/README.md`. Returns once detection has finished (about 5 s per 20,000 records); `400` with the missing columns if the file is wrong. |
+
+Switching datasets clears all flag / deflag decisions (they belong to the old records). The frontend remembers the choice per browser session and shows a "Dataset: … · Change dataset" bar on the Ring and Lone pages.
+
+ML side: `GET /datasets/active`, `POST /datasets/builtin`, `POST /datasets/upload` (same bodies); uploads are stored in `ml/data/uploads/<id>/` (gitignored) and audited in the background; `GET /health` also returns `auditStatus`, `error` and `dataset`.
+
 ---
 
 ## 3. Express <-> ML (FastAPI, `http://localhost:8000`)
@@ -564,5 +576,6 @@ ML errors use the same error shape. Express maps any ML failure to `502 ML_UNAVA
 |---|---|---|---|
 | 2026-09-27 | all | v1 created | backend |
 | 2026-10-09 | all | v2: red anomaly cells (`anomalies`, `columns`), member deflag, ring colours, baseline, priority, case brief, stress test, single ML bundle | backend |
+| 2026-10-09 | /api/datasets/* | dataset chooser: active, builtin, upload (CSV) | backend |
 | 2026-10-09 | /api/benchmarks | optional `testSet`, `devSet` (with `ringMembers`, `byRingType`, `throughput`) and `scaleRun` | backend |
 | 2026-10-09 | all | v3: field keys and signals match the final dataset (Aadhaar, biometric, IP, UPI, email, login, transfers); `transfer` edges; new record features; stress scenario ids; `transfersScanned`, `auditDurationSeconds`, `oracle` | backend |

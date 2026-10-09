@@ -59,3 +59,9 @@ export const getRecord = (recordId) => request('GET', `/records/${enc(recordId)}
 export const searchRecords = (q, limit = 10) => request('GET', `/records/search${qs({ q, limit })}`);
 export const setRecordStatus = (recordId, status, note) => request('PUT', `/records/${enc(recordId)}/status`, { status, note });
 export const clearRecordStatus = (recordId) => request('DELETE', `/records/${enc(recordId)}/status`);
+
+// ---- Dataset choice (shown before the Ring / Lone pages)
+export const getActiveDataset = () => request('GET', '/datasets/active');
+export const useBuiltinDataset = () => request('POST', '/datasets/builtin', {});
+// payload: { name, ledgerCsv, transfersCsv } (file contents as text). Resolves when detection has finished.
+export const uploadDataset = (payload) => request('POST', '/datasets/upload', payload);

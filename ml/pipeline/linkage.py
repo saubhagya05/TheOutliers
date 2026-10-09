@@ -82,6 +82,9 @@ def ip_hubs(rows):
     for ip, members in groups.items():
         if len(members) < 2 or len(members) > PUBLIC_HUB_SIZE or is_family(members):
             continue
+        # A CSC centre's IP is shared by design; don't rely on size alone (small datasets have small CSC groups).
+        if sum(m["registration_channel"] == "CSC" for m in members) * 2 >= len(members):
+            continue
         hubs.append(_hub("sharedIp", f"ip:{ip}", [m["beneficiary_id"] for m in members], ip, "ip"))
         members = sorted(members, key=lambda m: m["registration_ts"])
         times = [parse_ts(m["registration_ts"]).timestamp() for m in members]

@@ -9,6 +9,20 @@ from pathlib import Path
 
 DATA_DIR = Path(os.environ.get("ML_DATA_DIR") or Path(__file__).resolve().parent.parent / "data")
 DATASET_NAME = "Post-Matric Scholarship 2025-26 (simulated)"
+UPLOAD_DIR = Path(__file__).resolve().parent.parent / "data" / "uploads"
+
+# Columns an uploaded ledger must have (same as LEDGER_COLUMNS in ml/data/generate_dataset.py).
+LEDGER_COLUMNS = [
+    "beneficiary_id", "application_id", "scheme",
+    "full_name", "father_name", "spouse_name", "gender", "dob", "age",
+    "aadhaar_number", "aadhaar_status", "biometric_hash",
+    "phone", "email",
+    "address_line", "village_town", "district", "state", "pincode",
+    "registration_ip", "registration_channel", "registration_ts", "application_ts",
+    "bank_name", "bank_account_number", "ifsc", "upi_id", "payout_mode", "amount_inr", "payout_ts",
+    "login_attempts_failed", "login_success", "login_window_minutes",
+]
+TRANSFER_COLUMNS = ["transfer_id", "from_account", "to_account", "amount_inr", "ts", "channel"]
 
 
 def _read(path: Path) -> list:

@@ -28,3 +28,9 @@ export function reviewedCounts() {
     deflagged: all.filter((o) => o.status === 'deflagged').length,
   };
 }
+
+// A new dataset means new records: earlier decisions no longer apply.
+export function clearAllOverrides() {
+  store.ring.clear();
+  store.record.clear();
+}
