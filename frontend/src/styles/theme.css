@@ -438,5 +438,6 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 .app:has(.landing-page) .landing-content { justify-content: flex-start; padding-top: clamp(32px, 11vh, 110px); }
 .landing-footer { margin-top: auto; }
 
-/* More breathing room between the landing heading and the dataset strip */
-.landing-page .picker { margin-top: clamp(24px, 6vh, 72px); }
+/* Dataset strip sits at the bottom of the landing page, just above the footer; the heading stays where it is */
+.landing-page .picker { margin-top: auto; }
+.landing-page .landing-footer { margin-top: clamp(16px, 3vh, 32px); }
