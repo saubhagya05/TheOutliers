@@ -1,6 +1,6 @@
-// Landing-page effect: white lines trace outward from the middle of the page into its bottom half,
-// branch, and end in glowing red dots. Draws over the bottom half of its (position: relative) parent on a
-// transparent canvas. onTraced() fires once all lines have arrived; the red dots keep pulsing after that.
+// Landing-page effect: white lines trace outward from just below the dataset section, branch, and end in
+// glowing red dots. Draws on a transparent canvas from `top` (px) to the bottom of its (position: relative)
+// parent. onTraced() fires once all lines have arrived; the red dots keep pulsing after that.
 import { useEffect, useRef } from 'react';
 
 const TRACE_MS = 2200;
@@ -31,7 +31,7 @@ function room(x, y, angle, w, h) {
   return Math.min(tx, ty);
 }
 
-// Lines fan out downward from the top-centre of the canvas (the middle of the page).
+// Lines fan out downward from the top-centre of the canvas (just below the dataset section).
 function buildLines(w, h) {
   const cx = w / 2;
   const lines = [];
@@ -77,7 +77,7 @@ function partial(path, f) {
   return out;
 }
 
-export default function TraceTransition({ onTraced }) {
+export default function TraceTransition({ onTraced, top = 0 }) {
   const canvasRef = useRef(null);
   const tracedRef = useRef(onTraced);
   tracedRef.current = onTraced;
@@ -158,7 +158,7 @@ export default function TraceTransition({ onTraced }) {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      style={{ position: 'absolute', left: 0, right: 0, top: '50%', width: '100%', height: '50%', pointerEvents: 'none', zIndex: 5 }}
+      style={{ position: 'absolute', left: 0, right: 0, top: `${top}px`, width: '100%', height: `calc(100% - ${top}px)`, pointerEvents: 'none', zIndex: 5 }}
     />
   );
 }

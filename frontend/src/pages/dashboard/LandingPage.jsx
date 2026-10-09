@@ -1,7 +1,7 @@
 // Step 1 of the flow: title + a small dataset section (use ours or upload). Then /analyse.
 // Choosing a dataset starts the line-trace effect over the bottom half of this page right away; once the
 // dataset is ready and the lines have arrived, the page scrolls down into the next step, then routes to /analyse.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DatasetPicker } from '../../components/DatasetGate.jsx';
 import TraceTransition from './TraceTransition.jsx';
@@ -16,6 +16,15 @@ export default function LandingPage() {
   const [chosen, setChosen] = useState(false);
   const [scrolling, setScrolling] = useState(false); // next page mounted below
   const [moved, setMoved] = useState(false); // stack slid up
+  const [traceTop, setTraceTop] = useState(0); // where the lines start: just below the dataset section
+  const stackRef = useRef(null);
+
+  const startTrace = () => {
+    const stack = stackRef.current;
+    const picker = stack && stack.querySelector('.picker');
+    if (stack && picker) setTraceTop(Math.round(picker.getBoundingClientRect().bottom - stack.getBoundingClientRect().top + 6));
+    setTracing(true);
+  };
 
   const reset = () => { setTracing(false); setTraced(false); setChosen(false); };
 
@@ -36,7 +45,9 @@ export default function LandingPage() {
   return (
     <div style={{ height: '100%', overflow: 'hidden', position: 'relative' }}>
       <div
+        ref={stackRef}
         style={{
+          position: 'relative',
           height: '200%',
           transform: moved ? 'translateY(-50%)' : 'translateY(0)',
           transition: `transform ${SCROLL_MS}ms cubic-bezier(0.65, 0, 0.35, 1)`,
@@ -56,7 +67,7 @@ export default function LandingPage() {
                 </p>
               </section>
 
-              <DatasetPicker onStart={() => setTracing(true)} onFail={reset} onChosen={() => setChosen(true)} />
+              <DatasetPicker onStart={startTrace} onFail={reset} onChosen={() => setChosen(true)} />
 
               <footer className="landing-footer">
                 <span>IDENTIFY PATTERNS. DETECT FRAUD.</span>
@@ -64,9 +75,10 @@ export default function LandingPage() {
               </footer>
             </div>
           </main>
-          {tracing && <TraceTransition onTraced={() => setTraced(true)} />}
         </div>
         <div style={{ height: '50%' }}>{scrolling && <AnalysePage />}</div>
+        {/* Lines start below the dataset section and run on into the next page as it slides up. */}
+        {tracing && <TraceTransition top={traceTop} onTraced={() => setTraced(true)} />}
       </div>
     </div>
   );
