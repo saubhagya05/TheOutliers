@@ -1,32 +1,68 @@
-// OWNER: Ring. Props: rings = GET /api/rings items, onSelect(ringId), onChanged() after a status change.
+// OWNER: Ring. Props: rings = GET /api/rings items, onSelect(ringId), onChanged() after a status change,
+// prioritised (bool) = list is sorted by priorityScore, so show the rank badge.
+import { useMemo, useState } from 'react';
 import RiskBadge from '../../../components/RiskBadge.jsx';
 import ReasonChips from '../../../components/ReasonChips.jsx';
 import StatusActions from '../../../components/StatusActions.jsx';
+import { Empty } from '../../../components/States.jsx';
 import { formatInr } from '../../../components/format.js';
 import { setRingStatus, clearRingStatus } from '../../../api/client.js';
+import '../rings.css';
 
-// TODO(ring): filters (risk level, district, status), priority rank badge when sorted by priority,
-// polish card design. Basic working version below.
-export default function RingList({ rings, onSelect, onChanged }) {
+export default function RingList({ rings, onSelect, onChanged, prioritised = false }) {
+  const [level, setLevel] = useState('');
+  const [district, setDistrict] = useState('');
+  const [status, setStatus] = useState('');
+
+  const districts = useMemo(() => [...new Set(rings.map((r) => r.district))].sort(), [rings]);
+  const shown = rings.filter(
+    (r) => (!level || r.riskLevel === level) && (!district || r.district === district) && (!status || r.status === status),
+  );
+
   return (
-    <div style={{ display: 'grid', gap: 10 }}>
-      <div className="muted">{rings.length} rings</div>
-      {rings.map((r) => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <div className="filter-bar">
+        <select value={level} onChange={(e) => setLevel(e.target.value)} aria-label="Risk level">
+          <option value="">All risk levels</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <select value={district} onChange={(e) => setDistrict(e.target.value)} aria-label="District">
+          <option value="">All districts</option>
+          {districts.map((d) => <option key={d} value={d}>{d}</option>)}
+        </select>
+        <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Status">
+          <option value="">All statuses</option>
+          <option value="flagged">Flagged</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="deflagged">Deflagged</option>
+        </select>
+      </div>
+      <div className="section-label">{shown.length} of {rings.length} rings{prioritised ? ' · by priority' : ''}</div>
+
+      {!shown.length && <Empty label="No rings match these filters" />}
+
+      {shown.map((r) => (
         <div
           key={r.ringId}
-          className="panel"
+          className={`ring-card ${r.status === 'deflagged' ? 'deflagged' : ''}`}
+          style={{ '--ring-color': r.color }}
           onClick={() => onSelect(r.ringId)}
-          style={{ cursor: 'pointer', borderLeft: `3px solid ${r.color}`, opacity: r.status === 'deflagged' ? 0.45 : 1 }}
         >
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <strong style={{ color: r.color }}>{r.ringId}</strong>
+            <div className="row" style={{ gap: 10 }}>
+              {prioritised && <span className="rank-badge">#{r.priority.rank}</span>}
+              <strong className="mono" style={{ color: r.color, fontSize: 16 }}>{r.ringId}</strong>
+            </div>
             <RiskBadge score={r.riskScore} level={r.riskLevel} />
           </div>
-          <div className="muted">
-            {r.activeMemberCount} members · {formatInr(r.amountAtRiskInr)} · {r.district} · priority #{r.priority.rank} · {r.status}
+          <div className="muted mono" style={{ fontSize: 12, margin: '6px 0 8px' }}>
+            {r.activeMemberCount} members · {formatInr(r.amountAtRiskInr)} · {r.district} · {r.status}
+            {prioritised && ` · effort ${r.priority.effort}`}
           </div>
           <ReasonChips reasons={r.topReasons} />
-          <div style={{ marginTop: 8 }}>
+          <div style={{ marginTop: 10 }}>
             <StatusActions
               status={r.status}
               manualOverride={r.manualOverride}

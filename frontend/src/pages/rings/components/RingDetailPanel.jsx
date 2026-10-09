@@ -5,18 +5,22 @@ import AnomalyTable from '../../../components/AnomalyTable.jsx';
 import StatusActions from '../../../components/StatusActions.jsx';
 import RiskBadge from '../../../components/RiskBadge.jsx';
 import ReasonChips from '../../../components/ReasonChips.jsx';
-import { ErrorBox, Loading, Todo } from '../../../components/States.jsx';
+import { ErrorBox, Loading } from '../../../components/States.jsx';
 import { formatInr } from '../../../components/format.js';
 import { setRingStatus, clearRingStatus, setRecordStatus, clearRecordStatus } from '../../../api/client.js';
 import CaseBriefModal from './CaseBriefModal.jsx';
+import RecordDrawer from './RecordDrawer.jsx';
+import RingTimeline from './RingTimeline.jsx';
+import '../rings.css';
 
 export default function RingDetailPanel({ ring, loading, error, onBack, onChanged }) {
   const [briefOpen, setBriefOpen] = useState(false);
+  const [recordId, setRecordId] = useState(null);
   if (error) return <ErrorBox error={error} />;
   if (loading || !ring) return <Loading />;
 
   return (
-    <div style={{ display: 'grid', gap: 14 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 14 }}>
       <button className="btn" onClick={onBack} style={{ justifySelf: 'start' }}>← All rings</button>
 
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -40,15 +44,39 @@ export default function RingDetailPanel({ ring, loading, error, onBack, onChange
         <button className="btn btn-primary" onClick={() => setBriefOpen(true)}>Generate case brief</button>
       </div>
 
-      <Todo name="SignalBreakdown + SharedEntities + Timeline">
-        {`signalBreakdown: ${ring.signalBreakdown.length} bars (label, value 0-1)
-sharedEntities: ${ring.sharedEntities.map((e) => `${e.label} (${e.linkedMembers})`).join(', ')}
-timeline: ${ring.timeline.length} events (application / payout / withdrawal). Cut first if short on time.`}
-      </Todo>
+      <div>
+        <div className="section-label" style={{ marginBottom: 8 }}>Signal breakdown</div>
+        <div style={{ display: 'grid', gap: 10 }}>
+          {ring.signalBreakdown.map((s) => (
+            <div key={s.signal} style={{ display: 'grid', gap: 4 }}>
+              <div className="row" style={{ justifyContent: 'space-between', fontSize: 13 }}>
+                <span>{s.label}</span>
+                <span className="mono muted">{Math.round(s.value * 100)}</span>
+              </div>
+              <div className="bar-track"><div className="bar-fill" style={{ width: `${Math.round(s.value * 100)}%` }} /></div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <h3>Members</h3>
+      <div>
+        <div className="section-label" style={{ marginBottom: 8 }}>Shared entities</div>
+        <div style={{ display: 'grid', gap: 6 }}>
+          {ring.sharedEntities.map((e) => (
+            <div key={e.id} className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap', fontSize: 13 }}>
+              <span><span className="muted">{e.type}</span> · {e.label}</span>
+              <span className="mono" style={{ color: 'var(--red)' }}>{e.linkedMembers} members</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <RingTimeline events={ring.timeline} />
+
+      <div className="section-label">Members</div>
       {/* Red cells = anomalies. Deflag a member who was wrongly included; counts update via onChanged. */}
       <AnomalyTable
+        onRowClick={(m) => setRecordId(m.recordId)}
         columns={ring.columns}
         rows={ring.members}
         renderActions={(m) => (
@@ -62,7 +90,7 @@ timeline: ${ring.timeline.length} events (application / payout / withdrawal). Cu
           />
         )}
       />
-      {/* TODO(ring): row click -> drawer with GET /api/records/:recordId (features vs typical, all reasons) */}
+      {recordId && <RecordDrawer recordId={recordId} onClose={() => setRecordId(null)} />}
 
       {briefOpen && <CaseBriefModal ringId={ring.ringId} onClose={() => setBriefOpen(false)} />}
     </div>
