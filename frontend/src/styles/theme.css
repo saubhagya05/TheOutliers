@@ -419,3 +419,15 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   .app:has(.landing-page) { height: auto; overflow: visible; }
   .app:has(.landing-page) .app-main, .app:has(.landing-page) .landing-page, .app:has(.landing-page) .landing-content { height: auto; overflow: visible; }
 }
+
+/* Main landing heading: big and white */
+.landing-eyebrow {
+  color: var(--text);
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+}
+@media (max-width: 700px) {
+  .landing-eyebrow { font-size: clamp(26px, 8vw, 36px); letter-spacing: 0.04em; }
+}
