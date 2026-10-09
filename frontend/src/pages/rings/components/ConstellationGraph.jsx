@@ -115,7 +115,7 @@ export default function ConstellationGraph({ data, selectedRingId, onSelectRing,
     const hub = HUBS.has(node.type);
 
     // Alpha: background stars are faint; when a ring is selected, everything else dims toward DIM_ALPHA.
-    const base = inRing ? 1 : 0.4;
+    const base = inRing ? 1 : 0.75;
     const alpha = isSel ? 1 : base * (1 - focus * (1 - DIM_ALPHA / base));
 
     // Selected ring: detailed network view. Beneficiaries = teal ringed circles, shared hubs = red warning
@@ -176,7 +176,9 @@ export default function ConstellationGraph({ data, selectedRingId, onSelectRing,
     let col = inRing ? colorOf(node.ringId) : palette.muted;
     if (inRing) col = mix(col, palette.muted, grey);
 
-    const r = inRing ? (hub ? 5 : 3.2) : 1.1;
+    // Never smaller than a few screen pixels, so nodes stay visible when the whole sky is in view.
+    const px = 1 / scale;
+    const r = inRing ? Math.max(hub ? 5 : 3.2, (hub ? 5.5 : 4) * px) : Math.max(1.1, 2 * px);
     const deflagged = node.status === 'deflagged';
 
     ctx.save();

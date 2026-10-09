@@ -177,10 +177,11 @@ export default function LoneConstellation({ items, stars, selectedSignal, select
       return;
     }
 
-    const base = star ? 0.4 : 1;
+    const base = star ? 0.75 : 1;
     const alpha = base * (1 - focus * (1 - DIM_ALPHA / base));
     const col = star ? palette.muted : colorOf(node.signal);
-    const r = hub ? 7 : star ? 1.1 : 2.4 + (node.riskScore || 0) / 60;
+    const px = 1 / scale;
+    const r = hub ? Math.max(7, 9 * px) : star ? Math.max(1.1, 2 * px) : Math.max(2.4 + (node.riskScore || 0) / 60, 4.5 * px);
 
     ctx.save();
     ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
