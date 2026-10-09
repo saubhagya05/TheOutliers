@@ -187,8 +187,39 @@
       "recordsPerSecond": 5747
     }
   },
-  "public": [],
-  "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmarks (Febrl / NCVR) not run yet.",
+  "public": [
+    {
+      "dataset": "Febrl2",
+      "component": "Name / DOB / address / ID matcher (record linkage)",
+      "precision": 0.997,
+      "recall": 0.995,
+      "f1": 0.996,
+      "pairs": 1934,
+      "baselineRecall": 0.914,
+      "note": "Threshold set on Febrl1; this set was not used for tuning. Febrl has no father's name."
+    },
+    {
+      "dataset": "Febrl3",
+      "component": "Name / DOB / address / ID matcher (record linkage)",
+      "precision": 1.0,
+      "recall": 0.988,
+      "f1": 0.994,
+      "pairs": 6538,
+      "baselineRecall": 0.904,
+      "note": "Threshold set on Febrl1; this set was not used for tuning. Febrl has no father's name."
+    },
+    {
+      "dataset": "Febrl4",
+      "component": "Name / DOB / address / ID matcher (record linkage)",
+      "precision": 0.999,
+      "recall": 0.997,
+      "f1": 0.998,
+      "pairs": 5000,
+      "baselineRecall": 0.956,
+      "note": "Threshold set on Febrl1; this set was not used for tuning. Febrl has no father's name."
+    }
+  ],
+  "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmark: the record-linkage matcher on Febrl2-4 (threshold chosen on Febrl1).",
   "ranAt": "2026-10-09T12:43:36Z",
   "scaleRun": {
     "records": 200000,

@@ -32,7 +32,8 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 - Both held-out ring types (`slow_drip`, `identity_reuse`) found.
 - Unique-ID baseline: catches **0** rings.
 - Throughput: 20,000 records in about 4–7 s; 200,000 records + 176,000 transfers in about 53 s.
-- Honest caveat for the pitch: these are on our simulated ledger. Public benchmark (Febrl / NCVR) not run yet.
+- **Public benchmark (Febrl2-4, real benchmark data with known duplicates):** matcher F1 0.994-0.998 (precision 0.997-1.0, recall 0.988-0.997); a unique-key check finds only 90-96% of duplicates. Threshold set on Febrl1 only.
+- Honest caveats: ring numbers are on our simulated ledger; Febrl is a well-known, fairly clean benchmark and has no father's name; money-flow detection has no public benchmark yet (IBM AML needs a Kaggle login).
 
 ---
 
@@ -52,7 +53,8 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 **Next**
 - ⬜ Persist flag/deflag decisions to a JSON file so a restart keeps them.
 - ⬜ Optional LLM rewrite of the case brief (key server-side only).
-- ⬜ Public benchmark of the name matcher on Febrl / NCVR.
+- ✅ Public benchmark of the matcher on Febrl2-4 (`ml/benchmarks/febrl.py`), shown on the Dataset page.
+- ⬜ Optional: money-flow benchmark on IBM AML (needs the Kaggle CSV).
 - ⬜ Help with integration and the demo script.
 
 **Blockers:** none.
@@ -117,6 +119,7 @@ Status keys: ✅ done · 🟡 in progress · ⬜ not started · ⛔ blocked
 
 Newest first. One line per PR or milestone: `date · who · what`.
 
+- 2026-10-09 · Backend lead · Public benchmark on Febrl2-4 (matcher F1 0.994-0.998)
 - 2026-10-09 · Backend lead · ML pipeline + benchmark merged; live mode works end to end
 - 2026-10-09 · Backend lead · Dataset v2 (bias controls, transfers, test set); API v3; mock serves real data
 - 2026-10-09 · Backend lead · Dataset generator v1

@@ -5,3 +5,4 @@ networkx>=3.3
 rapidfuzz>=3.9
 jellyfish>=1.0
 scikit-learn>=1.5
+recordlinkage>=0.16   # only for ml/benchmarks/febrl.py (public benchmark data)

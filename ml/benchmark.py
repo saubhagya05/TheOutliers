@@ -94,14 +94,16 @@ def main():
               f"lone P={s['lone']['precision']} R={s['lone']['recall']} F1={s['lone']['f1']}")
         return
     test = evaluate(ML / "data" / "test")
+    bench_file = ML / "data" / "benchmarks.json"
+    previous = json.loads(bench_file.read_text(encoding="utf-8")) if bench_file.exists() else {}
     out = {
         # The headline numbers are the held-out test set: the detector was tuned on dev only.
         "simulatedLedger": {"rings": test["rings"], "lone": test["lone"]},
         "testSet": test,
         "devSet": dev,
-        "public": [],
-        "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); "
-                 "the detector was tuned on the dev set only. Public benchmarks (Febrl / NCVR) not run yet.",
+        "public": previous.get("public", []),   # filled by ml/benchmarks/febrl.py
+        "notes": previous.get("notes", "Headline numbers are from the held-out test set (different seed, ring sizes, noise and "
+                                        "rates); the detector was tuned on the dev set only."),
         "ranAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     if args.scale:
