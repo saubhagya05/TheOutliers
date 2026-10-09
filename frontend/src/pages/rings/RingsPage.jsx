@@ -1,14 +1,15 @@
 // OWNER: Ring. Spec: docs/TASKS.md "Person B".
 // Layout: big constellation graph (left) + ring list / ring detail (right). Toolbar on top.
 import { useState } from 'react';
-import { getRingsGraph, getRings, getRing } from '../../api/client.js';
+import { getRingsGraph, getRings, getRing, getBaseline } from '../../api/client.js';
 import { useApi } from '../../hooks/useApi.js';
 import { ErrorBox, Loading } from '../../components/States.jsx';
 import ConstellationGraph from './components/ConstellationGraph.jsx';
 import RingList from './components/RingList.jsx';
 import RingDetailPanel from './components/RingDetailPanel.jsx';
-import BaselineToggle from './components/BaselineToggle.jsx';
+import BaselineToggle, { BaselineOverlay } from './components/BaselineToggle.jsx';
 import StressTestDrawer from './components/StressTestDrawer.jsx';
+import './rings.css';
 
 export default function RingsPage() {
   const [selectedRingId, setSelectedRingId] = useState(null);
@@ -18,6 +19,7 @@ export default function RingsPage() {
 
   const graph = useApi(() => getRingsGraph({ includeContext: true, contextNodes: 300 }), []);
   const rings = useApi(() => getRings({ sort, pageSize: 100 }), [sort]);
+  const baseline = useApi(() => getBaseline(), []);
   const detail = useApi(() => (selectedRingId ? getRing(selectedRingId) : Promise.resolve(null)), [selectedRingId]);
 
   // After any flag/deflag, refresh everything that shows status or counts.
@@ -43,8 +45,8 @@ export default function RingsPage() {
       <ErrorBox error={graph.error || rings.error} onRetry={refreshAll} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(360px, 1fr)', gap: 16, minHeight: 600 }}>
-        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#000' }}>
-          {graph.loading ? <Loading label="Drawing constellation" /> : graph.data && (
+        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#000', position: 'relative' }}>
+          {graph.loading && !graph.data ? <Loading label="Drawing constellation" /> : graph.data && (
             <ConstellationGraph
               data={graph.data}
               selectedRingId={selectedRingId}
@@ -52,6 +54,7 @@ export default function RingsPage() {
               baselineView={baselineView}
             />
           )}
+          {baselineView && <BaselineOverlay baseline={baseline.data} />}
         </div>
         <div className="panel" style={{ overflow: 'auto', maxHeight: 'calc(100vh - 180px)' }}>
           {selectedRingId ? (
@@ -63,7 +66,7 @@ export default function RingsPage() {
               onChanged={refreshAll}
             />
           ) : (
-            rings.data && <RingList rings={rings.data.items} onSelect={setSelectedRingId} onChanged={refreshAll} />
+            rings.data && <RingList rings={rings.data.items} prioritised={sort === 'priorityScore'} onSelect={setSelectedRingId} onChanged={refreshAll} />
           )}
         </div>
       </div>
