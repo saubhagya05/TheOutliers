@@ -1,0 +1,247 @@
+{
+  "name": "Post-Matric Scholarship 2025-26 (simulated)",
+  "simulated": true,
+  "recordCount": 20000,
+  "generatedAt": "2026-10-09T11:35:24Z",
+  "description": "Synthetic scholarship ledger. Names, addresses, phones, Aadhaar numbers (valid Verhoeff checksums) and bank details follow realistic Indian formats. Families and CSC centres create legitimate sharing. Ring and lone ghosts were planted afterwards with labels kept in a separate file the detector never reads.",
+  "columnGroups": [
+    {
+      "group": "Identity",
+      "columns": [
+        {
+          "name": "full_name, father_name, spouse_name",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Fuzzy + phonetic matching for name variants of one identity"
+        },
+        {
+          "name": "dob, age, gender",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Same DOB + same father across 'different' people"
+        },
+        {
+          "name": "aadhaar_number",
+          "usedFor": [
+            "ring",
+            "lone"
+          ],
+          "description": "Duplicates (ring); Verhoeff checksum / format validity (lone)"
+        },
+        {
+          "name": "aadhaar_status",
+          "usedFor": [
+            "lone"
+          ],
+          "description": "Expired or deactivated Aadhaar still receiving money"
+        },
+        {
+          "name": "biometric_hash",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Same biometric enrolled under different names"
+        }
+      ]
+    },
+    {
+      "group": "Contact",
+      "columns": [
+        {
+          "name": "phone",
+          "usedFor": [
+            "ring",
+            "lone"
+          ],
+          "description": "Shared or sequential batch numbers (ring); malformed or duplicated (lone)"
+        },
+        {
+          "name": "email",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Templated addresses on disposable domains"
+        },
+        {
+          "name": "address_line, village_town, district, state, pincode",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Unrelated people at one address, with format variants"
+        }
+      ]
+    },
+    {
+      "group": "Registration",
+      "columns": [
+        {
+          "name": "registration_ip, registration_channel",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Many registrations from one IP in a short burst (CSC centres are legitimate)"
+        },
+        {
+          "name": "registration_ts, application_ts",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Burst timing"
+        },
+        {
+          "name": "login_attempts_failed, login_success, login_window_minutes",
+          "usedFor": [
+            "lone"
+          ],
+          "description": "Many failed logins then success (account takeover)"
+        }
+      ]
+    },
+    {
+      "group": "Payment",
+      "columns": [
+        {
+          "name": "bank_name, bank_account_number, ifsc",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "Many identities paying out to one account"
+        },
+        {
+          "name": "upi_id, payout_mode",
+          "usedFor": [
+            "ring"
+          ],
+          "description": "One collector UPI ID for many beneficiaries"
+        },
+        {
+          "name": "amount_inr, payout_ts",
+          "usedFor": [
+            "ring",
+            "lone"
+          ],
+          "description": "Money at risk"
+        }
+      ]
+    }
+  ],
+  "planted": {
+    "rings": 33,
+    "ringTypes": [
+      {
+        "type": "account_funnel",
+        "count": 5,
+        "description": "Unrelated identities paying out to 1-2 bank accounts, registered in a burst from one IP"
+      },
+      {
+        "type": "upi_collector",
+        "count": 4,
+        "description": "Payouts routed to one collector UPI ID; templated disposable emails"
+      },
+      {
+        "type": "biometric_clone",
+        "count": 4,
+        "description": "Same biometric under different names and Aadhaar numbers; same DOB and father"
+      },
+      {
+        "type": "ip_farm",
+        "count": 4,
+        "description": "Burst of registrations from one IP with sequential phones and templated emails"
+      },
+      {
+        "type": "phone_batch",
+        "count": 4,
+        "description": "Sequential phone numbers paying into a shared account"
+      },
+      {
+        "type": "address_cluster",
+        "count": 4,
+        "description": "Unrelated surnames at one address (with spelling variants) sharing an account"
+      },
+      {
+        "type": "slow_drip",
+        "count": 4,
+        "description": "Held out: same IP spread over days plus a shared address (weak signals only)"
+      },
+      {
+        "type": "identity_reuse",
+        "count": 4,
+        "description": "Held out: name variants with the same DOB/father and batch phones, no shared money trail"
+      }
+    ],
+    "loneGhosts": 240,
+    "loneTraits": {
+      "invalid_aadhaar": 69,
+      "expired_aadhaar": 77,
+      "invalid_phone": 69,
+      "login_bruteforce": 72,
+      "duplicate_phone": 46
+    },
+    "hardNegatives": [
+      {
+        "type": "family_shared_address",
+        "count": 5244,
+        "description": "Family members at one address"
+      },
+      {
+        "type": "family_shared_phone",
+        "count": 1787,
+        "description": "Siblings using a parent's phone"
+      },
+      {
+        "type": "csc_shared_ip",
+        "count": 5792,
+        "description": "Genuine applicants registering at a CSC centre (shared IP)"
+      },
+      {
+        "type": "family_shared_account",
+        "count": 622,
+        "description": "Siblings paid into a parent's account"
+      },
+      {
+        "type": "forgetful_login",
+        "count": 48,
+        "description": "Honest users with 5-7 failed logins over a long window"
+      }
+    ]
+  },
+  "howCreated": [
+    "Generated households of students with realistic names, DOBs, addresses, phones, Aadhaar numbers and bank accounts.",
+    "Added legitimate sharing: families (address, phone, account), CSC centres (shared IP), forgetful users (failed logins).",
+    "Planted 33 rings across 8 types and 240 lone ghosts with 5 trait types.",
+    "Held two ring types (slow_drip, identity_reuse) out of tuning to test generalisation.",
+    "Shuffled records and assigned IDs afterwards so order and IDs reveal nothing."
+  ],
+  "pipeline": [
+    {
+      "step": "Blocking",
+      "description": "Group records by pincode, phone prefix and name initials."
+    },
+    {
+      "step": "Linkage",
+      "description": "Fuzzy + phonetic names; exact match on account, UPI, biometric, phone, IP, email pattern."
+    },
+    {
+      "step": "Graph",
+      "description": "Records and shared items become nodes; shared attributes become weighted edges."
+    },
+    {
+      "step": "Ring discovery",
+      "description": "Connected components, Louvain, IP burst windows, weighted ring score."
+    },
+    {
+      "step": "Lone scoring",
+      "description": "Aadhaar checksum and status, phone validity and duplication, login behaviour."
+    },
+    {
+      "step": "Explain",
+      "description": "Top contributing signals become reasons and red table cells."
+    }
+  ],
+  "limitations": [
+    "Real welfare fraud labels are not public, so the ledger is simulated.",
+    "Results are on simulated fraud plus component benchmarks, not on real welfare data."
+  ]
+}

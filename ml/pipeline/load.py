@@ -8,6 +8,13 @@ DATASET_NAME = "Post-Matric Scholarship 2025-26 (simulated)"
 
 
 def load_ledger() -> pd.DataFrame:
-    df = pd.read_csv(DATA_PATH, parse_dates=["accountOpenedAt", "appliedAt", "payoutAt"])
-    # Ground-truth columns (is_ghost, ring_label) must never reach the detector.
-    return df.drop(columns=[c for c in ("is_ghost", "ring_label", "ghost_type") if c in df.columns])
+    # Ground truth lives in truth.csv and must never be read here.
+    df = pd.read_csv(
+        DATA_PATH,
+        dtype={"aadhaar_number": str, "phone": str, "pincode": str, "bank_account_number": str, "upi_id": str, "email": str},
+        keep_default_na=False,
+    )
+    for col in ("registration_ts", "application_ts", "payout_ts"):
+        df[col] = pd.to_datetime(df[col], utc=True)
+    df["dob"] = pd.to_datetime(df["dob"])
+    return df

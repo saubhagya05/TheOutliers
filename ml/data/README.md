@@ -1,33 +1,55 @@
 # Data
 
-Put the generated ledger here as `ledger.csv`, plus `dataset_info.json` and `benchmarks.json` (same shapes as `GET /api/dataset` and `GET /api/benchmarks` in `docs/API.md`).
+Regenerate everything (stdlib only, about 2 seconds):
+```bash
+python ml/data/generate_dataset.py                    # 20,000 rows, seed 7
+python ml/data/generate_dataset.py --rows 50000 --seed 11
+```
+
+| File | Who reads it |
+|---|---|
+| `ledger.csv` | The detector (`pipeline/load.py`). No labels. |
+| `truth.csv` | **Only** the benchmark script. Never the detector. |
+| `planted.json` | Summary of planted rings, lone ghosts and hard negatives. |
+| `dataset_info.json` | Served as `GET /api/dataset` (Dataset & Method page). |
+
+All identities are synthetic. Aadhaar numbers are fake but carry valid Verhoeff checksums, so checksum validation is meaningful.
 
 ## `ledger.csv` columns
 
-| Column | Example | Notes |
+| Column | Example | Used for |
 |---|---|---|
-| recordId | B-000123 | unique |
-| name | Rajesh Kumar | |
-| age | 20 | |
+| beneficiary_id | B-000123 | id (assigned after shuffling, reveals nothing) |
+| application_id | APP5167104572 | id |
+| scheme | Post-Matric Scholarship 2025-26 | |
+| full_name | Rajesh Kumar | ring: fuzzy + phonetic name variants |
+| father_name | Ram Prasad Kumar | ring: same father across "different" people |
+| spouse_name | (often empty) | ring |
 | gender | M / F | |
-| phone | 9812345621 | raw; ML masks it before output |
-| address | Ward 4, Rajgir | |
-| district | Nalanda | |
-| pincode | 803116 | string |
-| aadhaarHash | a91f3c... | hashed, never raw |
-| payoutAccount | SBI ****4521 | |
-| ifsc | SBIN0004521 | |
-| transferredTo | PNB ****7712 | empty if funds were not forwarded |
-| agentId | AG-07 | |
-| deviceId | D-0312 | OTP device |
-| otpIp | 10.4.2.17 | |
-| accountOpenedAt | 2025-08-10T00:00:00Z | |
-| appliedAt | 2025-08-14T10:02:00Z | |
-| payoutAt | 2025-08-20T09:00:00Z | |
-| amountInr | 90000 | integer |
-| minutesToWithdrawal | 7 | |
-| enrolledInRegistry | true | simulated registry cross-check |
+| dob | 2004-03-24 | ring: same DOB |
+| age | 21 | |
+| aadhaar_number | 290405206266 | ring: duplicates; lone: Verhoeff checksum / format |
+| aadhaar_status | active / expired / deactivated | lone |
+| biometric_hash | 5b57cf92ae26bbbb702150fb | ring: same biometric, different identities |
+| phone | 7789907821 | ring: shared / sequential; lone: malformed / duplicate |
+| email | sapna_khan@gmail.com (often empty) | ring: templated on disposable domains |
+| address_line, village_town, district, state, pincode | House 30, Ward 6 · Islampur · Nalanda · Bihar · 803171 | ring: shared address with format variants |
+| registration_ip | 157.38.25.93 | ring: burst from one IP |
+| registration_channel | self / CSC | context: CSC centres legitimately share an IP |
+| registration_ts, application_ts | 2025-07-23T15:32:23Z | ring: burst timing |
+| bank_name, bank_account_number, ifsc | SBI · 3459844017018341 · SBIN0841692 | ring: shared account |
+| upi_id | cash412@ybl (often empty) | ring: collector UPI |
+| payout_mode | DBT_BANK / UPI | |
+| amount_inr | 36000 | ₹ at risk |
+| payout_ts | 2025-09-15T09:00:00Z | |
+| login_attempts_failed, login_success, login_window_minutes | 14 · True · 6 | lone: many failures then success |
 
-Ground truth goes in **separate** columns or a separate file (`is_ghost`, `ring_label`, `ghost_type`). `pipeline/load.py` drops them before detection; only the benchmark script may read them.
+Empty strings mean "not provided". **Ignore empty values when looking for shared attributes** (for example, 45% of `upi_id` and 35% of `email` are empty).
 
-Large files (> 50 MB) should not be committed; share them over the team drive instead.
+## `truth.csv` columns
+`beneficiary_id, label (normal | ring | lone), ring_id, ring_type, ghost_traits, hard_negative, held_out, household_id`
+
+## What is planted (default run)
+- **33 rings, 409 members, 8 types.** `account_funnel`, `upi_collector`, `biometric_clone`, `ip_farm`, `phone_batch` and `address_cluster` are used for tuning. **`slow_drip` and `identity_reuse` are held out**: do not tune on them; they test generalisation.
+- **240 lone ghosts**, each with 1-2 traits: `invalid_aadhaar`, `expired_aadhaar`, `invalid_phone`, `duplicate_phone`, `login_bruteforce`.
+- **Hard negatives** (legitimate, must NOT be flagged): families sharing address / phone / account, CSC centres sharing an IP, forgetful users with 5-7 failed logins over a long window.
