@@ -8,6 +8,7 @@ Ghost-beneficiary detection for welfare and scholarship schemes. Finds **ring gh
 - `ml/`: FastAPI service running the detection pipeline.
 - `docs/API.md`: API contract (frontend ↔ Express ↔ ML). **Read this first.**
 - `docs/TASKS.md`: who builds what.
+- `PROGRESS.md`: what is done; every member updates their section with each PR.
 
 ## Run (mock mode, no ML needed)
 ```bash
