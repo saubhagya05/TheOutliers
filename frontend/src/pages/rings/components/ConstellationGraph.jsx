@@ -6,7 +6,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import { Empty } from '../../../components/States.jsx';
 import '../rings.css';
 
-const HUBS = new Set(['account', 'phone', 'agent', 'device', 'address']);
+const HUBS = new Set(['account', 'upi', 'biometric', 'ip', 'phone', 'email', 'address', 'agent', 'device']);
 const DIM_ALPHA = 0.08;
 
 const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();

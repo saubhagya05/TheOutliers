@@ -1,41 +1,67 @@
-// OWNER: Lone. Props: record = GET /api/records/:recordId response (null while loading), loading, error,
-// onBack(), onChanged() after a status change. Works for flagged AND unflagged records (manual flag).
+// OWNER: Lone. Props: record = GET /api/records/:recordId (null while loading), loading, error, color,
+// backLabel, onBack(), onChanged(). Same layout as the Ring page's RingDetailPanel.
 import AnomalyTable from '../../../components/AnomalyTable.jsx';
 import StatusActions from '../../../components/StatusActions.jsx';
 import RiskBadge from '../../../components/RiskBadge.jsx';
 import ReasonChips from '../../../components/ReasonChips.jsx';
-import { ErrorBox, Loading, Todo } from '../../../components/States.jsx';
+import { ErrorBox, Loading } from '../../../components/States.jsx';
+import { formatInr } from '../../../components/format.js';
 import { setRecordStatus, clearRecordStatus } from '../../../api/client.js';
+import '../../rings/rings.css';
 
-export default function LoneDetailPanel({ record, loading, error, onBack, onChanged }) {
+export default function LoneDetailPanel({ record, loading, error, color, backLabel = '← Back', onBack, onChanged }) {
   if (error) return <ErrorBox error={error} />;
   if (loading || !record) return <Loading />;
+  const f = record.fields;
 
   return (
-    <div style={{ display: 'grid', gap: 14 }}>
-      <button className="btn" onClick={onBack} style={{ justifySelf: 'start' }}>← All lone ghosts</button>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 14 }}>
+      <button className="btn" onClick={onBack} style={{ justifySelf: 'start' }}>{backLabel}</button>
+
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <h2>{record.fields.name} <span className="muted mono" style={{ fontSize: 14 }}>{record.recordId}</span></h2>
+        <h2 style={{ color: color || 'var(--text)' }}>{f.name}</h2>
         <RiskBadge score={record.riskScore} level={record.riskLevel} />
       </div>
-      <div className="muted">kind: {record.kind}{record.ringId ? ` (ring ${record.ringId})` : ''} · status: {record.status}</div>
+      <div className="muted mono" style={{ fontSize: 12 }}>
+        {record.recordId} · {f.district} · {formatInr(f.amountInr)} · {record.kind === 'ringMember' ? `ring ${record.ringId}` : record.kind} · status: {record.status}
+      </div>
       <ReasonChips reasons={record.reasons} max={6} />
 
-      <StatusActions
-        status={record.status}
-        manualOverride={record.manualOverride}
-        onSet={(s, note) => setRecordStatus(record.recordId, s, note)}
-        onClear={() => clearRecordStatus(record.recordId)}
-        onDone={onChanged}
-      />
+      <div className="row">
+        <StatusActions
+          status={record.status}
+          manualOverride={record.manualOverride}
+          onSet={(s, note) => setRecordStatus(record.recordId, s, note)}
+          onClear={() => clearRecordStatus(record.recordId)}
+          onDone={onChanged}
+        />
+      </div>
 
-      <Todo name="FeatureBars">
-        {record.features.map((f) => `${f.label}: ${f.value} (typical ${f.typical})${f.anomalous ? '  <- RED' : ''}`).join('\n')}
-        {'\nRender as horizontal bars: this record vs dataset typical, anomalous ones in red.'}
-      </Todo>
+      <div>
+        <div className="section-label" style={{ marginBottom: 8 }}>Evidence vs typical record</div>
+        <div style={{ display: 'grid', gap: 10 }}>
+          {record.features.map((x) => {
+            const scale = Math.max(x.value, x.typical * 2, 1);
+            return (
+              <div key={x.key} style={{ display: 'grid', gap: 4 }}>
+                <div className="row" style={{ justifyContent: 'space-between', fontSize: 13 }}>
+                  <span>{x.label}</span>
+                  <span className="mono" style={{ color: x.anomalous ? 'var(--red)' : 'var(--muted)' }}>
+                    {x.value} <span className="muted">· typical {x.typical}</span>
+                  </span>
+                </div>
+                <div className="bar-track">
+                  <div className={`bar-fill ${x.anomalous ? '' : 'neutral'}`} style={{ width: `${Math.round((x.value / scale) * 100)}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-      {/* All fields in one row, anomalous cells in red. TODO(lone): vertical key/value layout may read better here. */}
-      <AnomalyTable columns={record.columns} rows={[record]} />
+      <div className="section-label">Record</div>
+      {/* Red cells = the fields that triggered a signal. */}
+      <AnomalyTable columns={record.columns.map((c) => ({ ...c, default: ['name', 'aadhaarMasked', 'aadhaarStatus', 'phoneMasked', 'registrationAt', 'loginFailed', 'loginWindowMinutes', 'bankAccount', 'amountInr'].includes(c.key) }))} rows={[record]} />
     </div>
   );
 }
