@@ -31,7 +31,7 @@ function downloadTemplate(name, columns) {
 
 const OUR_LINE = '20,000 simulated scholarship beneficiaries and 17,667 money transfers, with 31 planted fraud rings and 240 lone ghosts whose answers we know.';
 
-export function DatasetPicker({ onChosen }) {
+export function DatasetPicker({ onChosen, onStart, onFail }) {
   const [active, setActive] = useState(null);
   const [ledger, setLedger] = useState(null);
   const [transfers, setTransfers] = useState(null);
@@ -44,12 +44,14 @@ export function DatasetPicker({ onChosen }) {
   const run = async (kind, fn) => {
     setBusy(kind);
     setError(null);
+    if (onStart) onStart(kind);
     try {
       const { dataset } = await fn();
       rememberDataset(dataset.id);
       onChosen(dataset);
     } catch (e) {
       setError(e);
+      if (onFail) onFail(e);
     } finally {
       setBusy(null);
     }
