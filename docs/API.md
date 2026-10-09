@@ -489,11 +489,20 @@ Undo. Response: `{ "recordId": "B-000045", "status": "notFlagged", "manualOverri
   "public": [
     { "dataset": "Febrl", "component": "Name/address matcher", "precision": 0.95, "recall": 0.93, "f1": 0.94 }
   ],
-  "notes": "Public benchmarks test components only.",
-  "ranAt": "2026-09-27T08:00:00Z"
+  "notes": "Headline numbers are from the held-out test set...",
+  "ranAt": "2026-09-27T08:00:00Z",
+  "testSet": {
+    "rings": { "planted": 35, "found": 35, "falseAlerts": 1, "precision": 0.97, "recall": 1.0, "f1": 0.99 },
+    "ringMembers": { "precision": 0.95, "recall": 0.94, "f1": 0.94 },
+    "lone": { "planted": 200, "found": 178, "falseAlerts": 13, "precision": 0.93, "recall": 0.89, "f1": 0.91 },
+    "byRingType": [ { "type": "slow_drip", "planted": 4, "found": 4, "heldOut": true } ],
+    "throughput": { "records": 20000, "transfers": 17536, "seconds": 3.5, "recordsPerSecond": 5714 }
+  },
+  "devSet": { "…": "same shape as testSet (the tuning set)" },
+  "scaleRun": { "records": 200000, "transfers": 176497, "seconds": 52.6, "recordsPerSecond": 3802 }
 }
 ```
-`public` may be an empty array.
+`simulatedLedger` = the held-out **test** set numbers (headline). `public` may be an empty array. `devSet`, `testSet` and `scaleRun` are optional; when present show `byRingType` (held-out types marked) and `scaleRun.recordsPerSecond` on the Dataset & Method page.
 
 ---
 
@@ -555,4 +564,5 @@ ML errors use the same error shape. Express maps any ML failure to `502 ML_UNAVA
 |---|---|---|---|
 | 2026-09-27 | all | v1 created | backend |
 | 2026-10-09 | all | v2: red anomaly cells (`anomalies`, `columns`), member deflag, ring colours, baseline, priority, case brief, stress test, single ML bundle | backend |
+| 2026-10-09 | /api/benchmarks | optional `testSet`, `devSet` (with `ringMembers`, `byRingType`, `throughput`) and `scaleRun` | backend |
 | 2026-10-09 | all | v3: field keys and signals match the final dataset (Aadhaar, biometric, IP, UPI, email, login, transfers); `transfer` edges; new record features; stress scenario ids; `transfersScanned`, `auditDurationSeconds`, `oracle` | backend |

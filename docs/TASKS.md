@@ -173,7 +173,7 @@ Express already serves every endpoint in mock mode (`MOCK=true`), with in-memory
 ### Must (in order)
 1. **Hour 0:** push this scaffold, confirm all three frontend people run it, and answer contract questions. Any contract change goes to `docs/API.md` first, then `client.js`, then the mock (`ml/data/build_mock_bundle.py` -> `backend/src/mock/bundle.json`), and gets announced in the chat.
 2. **Dataset (done):** `python ml/data/generate_dataset.py` (dev) and `--profile test` (held-out test set). `python ml/data/build_mock_bundle.py` rebuilds the mock bundle after any dataset change. Tune on dev only; run the test set once for the reported numbers.
-3. **ML pipeline** (`ml/pipeline/`), each module has its target shape in the docstring:
+3. **ML pipeline (done, see README "Detection pipeline")**. Original plan, kept for reference:
    - `linkage.py`: blocking, exact keys, fuzzy and phonetic names.
    - `graph.py`: networkx graph, plus `context_nodes`.
    - `rings.py`: components → Louvain → cycles/fan-in → bursts → ring score, reasons, anomalies (red cells), priority.

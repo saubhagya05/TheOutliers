@@ -1,0 +1,199 @@
+{
+  "simulatedLedger": {
+    "rings": {
+      "planted": 35,
+      "found": 35,
+      "falseAlerts": 1,
+      "precision": 0.97,
+      "recall": 1.0,
+      "f1": 0.99
+    },
+    "lone": {
+      "planted": 200,
+      "found": 178,
+      "falseAlerts": 13,
+      "precision": 0.93,
+      "recall": 0.89,
+      "f1": 0.91
+    }
+  },
+  "testSet": {
+    "rings": {
+      "planted": 35,
+      "found": 35,
+      "falseAlerts": 1,
+      "precision": 0.97,
+      "recall": 1.0,
+      "f1": 0.99
+    },
+    "ringMembers": {
+      "precision": 0.99,
+      "recall": 0.9,
+      "f1": 0.94
+    },
+    "lone": {
+      "planted": 200,
+      "found": 178,
+      "falseAlerts": 13,
+      "precision": 0.93,
+      "recall": 0.89,
+      "f1": 0.91
+    },
+    "byRingType": [
+      {
+        "type": "account_funnel",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "address_cluster",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "biometric_clone",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "identity_reuse",
+        "planted": 3,
+        "found": 3,
+        "heldOut": true
+      },
+      {
+        "type": "ip_farm",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "kickback_cycle",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "phone_batch",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "slow_drip",
+        "planted": 4,
+        "found": 4,
+        "heldOut": true
+      },
+      {
+        "type": "upi_collector",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      }
+    ],
+    "throughput": {
+      "records": 20000,
+      "transfers": 17536,
+      "seconds": 3.5,
+      "recordsPerSecond": 5714
+    }
+  },
+  "devSet": {
+    "rings": {
+      "planted": 31,
+      "found": 31,
+      "falseAlerts": 4,
+      "precision": 0.89,
+      "recall": 1.0,
+      "f1": 0.94
+    },
+    "ringMembers": {
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.95
+    },
+    "lone": {
+      "planted": 240,
+      "found": 202,
+      "falseAlerts": 9,
+      "precision": 0.96,
+      "recall": 0.84,
+      "f1": 0.9
+    },
+    "byRingType": [
+      {
+        "type": "account_funnel",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "address_cluster",
+        "planted": 3,
+        "found": 3,
+        "heldOut": false
+      },
+      {
+        "type": "biometric_clone",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "identity_reuse",
+        "planted": 3,
+        "found": 3,
+        "heldOut": true
+      },
+      {
+        "type": "ip_farm",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      },
+      {
+        "type": "kickback_cycle",
+        "planted": 3,
+        "found": 3,
+        "heldOut": false
+      },
+      {
+        "type": "phone_batch",
+        "planted": 3,
+        "found": 3,
+        "heldOut": false
+      },
+      {
+        "type": "slow_drip",
+        "planted": 3,
+        "found": 3,
+        "heldOut": true
+      },
+      {
+        "type": "upi_collector",
+        "planted": 4,
+        "found": 4,
+        "heldOut": false
+      }
+    ],
+    "throughput": {
+      "records": 20000,
+      "transfers": 17667,
+      "seconds": 3.48,
+      "recordsPerSecond": 5747
+    }
+  },
+  "public": [],
+  "notes": "Headline numbers are from the held-out test set (different seed, ring sizes, noise and rates); the detector was tuned on the dev set only. Public benchmarks (Febrl / NCVR) not run yet.",
+  "ranAt": "2026-10-09T12:43:36Z",
+  "scaleRun": {
+    "records": 200000,
+    "transfers": 176497,
+    "seconds": 52.6,
+    "recordsPerSecond": 3802
+  }
+}

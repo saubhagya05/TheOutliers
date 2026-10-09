@@ -1,28 +1,26 @@
-"""Step 1: load the pre-built ledger. Expected columns are listed in ml/data/README.md."""
+"""Step 1: load the ledger and transfers as plain dicts (strings). Fast enough for 200k+ rows.
+
+Set ML_DATA_DIR to point at another dataset folder (e.g. ml/data/test) without code changes.
+Ground truth lives in truth.csv and is never read here.
+"""
+import csv
+import os
 from pathlib import Path
 
-import pandas as pd
-
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-DATA_PATH = DATA_DIR / "ledger.csv"
+DATA_DIR = Path(os.environ.get("ML_DATA_DIR") or Path(__file__).resolve().parent.parent / "data")
 DATASET_NAME = "Post-Matric Scholarship 2025-26 (simulated)"
 
 
-def load_ledger() -> pd.DataFrame:
-    # Ground truth lives in truth.csv and must never be read here.
-    df = pd.read_csv(
-        DATA_PATH,
-        dtype={"aadhaar_number": str, "phone": str, "pincode": str, "bank_account_number": str, "upi_id": str, "email": str},
-        keep_default_na=False,
-    )
-    for col in ("registration_ts", "application_ts", "payout_ts"):
-        df[col] = pd.to_datetime(df[col], utc=True)
-    df["dob"] = pd.to_datetime(df["dob"])
-    return df
+def _read(path: Path) -> list:
+    with open(path, encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
 
 
-def load_transfers() -> pd.DataFrame:
+def load_ledger(data_dir: Path = None) -> list:
+    return _read(Path(data_dir or DATA_DIR) / "ledger.csv")
+
+
+def load_transfers(data_dir: Path = None) -> list:
     """Post-payout money movements: transfer_id, from_account, to_account, amount_inr, ts, channel."""
-    df = pd.read_csv(DATA_DIR / "transfers.csv", dtype={"from_account": str, "to_account": str})
-    df["ts"] = pd.to_datetime(df["ts"], utc=True)
-    return df
+    path = Path(data_dir or DATA_DIR) / "transfers.csv"
+    return _read(path) if path.exists() else []

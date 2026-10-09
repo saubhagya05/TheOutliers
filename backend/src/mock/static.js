@@ -1,15 +1,18 @@
-// Benchmarks in mock mode. Replace with ml/data/benchmarks.json from the real benchmark run.
+// Benchmarks: the real numbers from `python ml/benchmark.py` (ml/data/benchmarks.json) when present.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-export const benchmarks = {
+const file = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../ml/data/benchmarks.json');
+
+const placeholder = {
   simulatedLedger: {
-    rings: { planted: 31, found: 28, falseAlerts: 2, precision: 0.93, recall: 0.9, f1: 0.92 },
-    lone: { planted: 240, found: 196, falseAlerts: 31, precision: 0.86, recall: 0.82, f1: 0.84 },
+    rings: { planted: 0, found: 0, falseAlerts: 0, precision: 0, recall: 0, f1: 0 },
+    lone: { planted: 0, found: 0, falseAlerts: 0, precision: 0, recall: 0, f1: 0 },
   },
-  public: [
-    { dataset: 'Febrl', component: 'Name/address matcher', precision: 0.95, recall: 0.93, f1: 0.94 },
-    { dataset: 'NC Voter Registration', component: 'Name/address matcher', precision: 0.9, recall: 0.86, f1: 0.88 },
-    { dataset: 'IBM AML', component: 'Cycle and collector detection', precision: 0.78, recall: 0.72, f1: 0.75 },
-  ],
-  notes: 'MOCK NUMBERS. Replace with the real benchmark run on the held-out test set. Public benchmarks test components only.',
-  ranAt: '2026-09-27T08:00:00Z',
+  public: [],
+  notes: 'Benchmarks not run yet: python ml/benchmark.py',
+  ranAt: null,
 };
+
+export const benchmarks = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : placeholder;
