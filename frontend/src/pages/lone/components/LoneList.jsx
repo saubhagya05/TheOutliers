@@ -9,11 +9,12 @@ import {
 
 const SIGNALS = [
   { value: '', label: 'All signals' },
-  { value: 'instantWithdrawal', label: 'Instant withdrawal' },
-  { value: 'newAccount', label: 'New account' },
-  { value: 'oddHourApplication', label: 'Odd-hour application' },
-  { value: 'registryMismatch', label: 'Registry mismatch' },
-  { value: 'areaAnomaly', label: 'Area anomaly' },
+  { value: 'invalidAadhaar', label: 'Invalid Aadhaar' },
+  { value: 'expiredAadhaar', label: 'Expired Aadhaar' },
+  { value: 'invalidPhone', label: 'Invalid phone' },
+  { value: 'duplicatePhone', label: 'Duplicate phone' },
+  { value: 'loginBruteforce', label: 'Login brute force' },
+  { value: 'oddHourRegistration', label: 'Odd-hour registration' },
 ];
 
 const LEVELS = [

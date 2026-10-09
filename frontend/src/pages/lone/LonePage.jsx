@@ -10,11 +10,12 @@ import RecordSearch from './components/RecordSearch.jsx';
 import './LonePage.css';
 
 const SIGNALS = [
-  { value: 'instantWithdrawal', label: 'Instant withdrawal' },
-  { value: 'newAccount', label: 'New account' },
-  { value: 'oddHourApplication', label: 'Odd-hour application' },
-  { value: 'registryMismatch', label: 'Registry mismatch' },
-  { value: 'areaAnomaly', label: 'Area anomaly' },
+  { value: 'invalidAadhaar', label: 'Invalid Aadhaar' },
+  { value: 'expiredAadhaar', label: 'Expired Aadhaar' },
+  { value: 'invalidPhone', label: 'Invalid phone' },
+  { value: 'duplicatePhone', label: 'Duplicate phone' },
+  { value: 'loginBruteforce', label: 'Login brute force' },
+  { value: 'oddHourRegistration', label: 'Odd-hour registration' },
 ];
 
 const RISK_COLORS = {
@@ -119,6 +120,7 @@ function SignalSummary({ counts }) {
             RISK_COLORS.low,
             'var(--orange, #ffb547)',
             RISK_COLORS.normal,
+            'var(--muted, #8a8a8a)',
           ];
 
           return (

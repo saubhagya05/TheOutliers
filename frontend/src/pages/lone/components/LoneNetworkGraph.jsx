@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 
 const FIELD_TYPES = [
-  { key: 'payoutAccount', label: 'Account', color: '#5B9BD5' },
+  { key: 'bankAccount', label: 'Account', color: '#5B9BD5' },
   { key: 'phoneMasked', label: 'Phone', color: '#55C2A3' },
-  { key: 'deviceId', label: 'Device', color: '#B69CFF' },
-  { key: 'transferredTo', label: 'Recipient', color: '#F2B66D' },
+  { key: 'registrationIp', label: 'Reg. IP', color: '#B69CFF' },
+  { key: 'upiId', label: 'UPI ID', color: '#F2B66D' },
   { key: 'address', label: 'Address', color: '#E58CA8' },
 ];
 
