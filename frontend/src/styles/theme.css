@@ -452,3 +452,9 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 .landing-page .picker-file input::file-selector-button { font-size: 13px; padding: 5px 12px; }
 .landing-page .picker-links, .landing-page .picker-links button { font-size: 12.5px; }
 .landing-page .picker-or { font-size: 12px; padding: 0 18px; }
+
+/* Landing title bigger (only the landing page; "Choose an analysis" keeps its size) */
+.landing-eyebrow:not(.analyse-title) { font-size: clamp(44px, 5.5vw, 92px); white-space: nowrap; }
+@media (max-width: 700px) {
+  .landing-eyebrow:not(.analyse-title) { font-size: clamp(30px, 9vw, 44px); white-space: normal; }
+}
