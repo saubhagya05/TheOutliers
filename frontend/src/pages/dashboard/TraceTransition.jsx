@@ -1,7 +1,7 @@
 // Landing-page effect: white lines trace outward from just below the dataset section, branch, and end in
 // glowing red dots. Draws on a transparent canvas from `top` (px) to the bottom of its (position: relative)
 // parent. onTraced() fires once all lines have arrived; the red dots keep pulsing after that.
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 const TRACE_MS = 2200;
 
@@ -87,7 +87,9 @@ export default function TraceTransition({ onTraced = () => {}, top = 0, settled 
   const tracedRef = useRef(onTraced);
   tracedRef.current = onTraced;
 
-  useEffect(() => {
+  // Layout effect + a synchronous first frame: the canvas is painted with its lines before the browser shows it,
+  // so arriving on "Choose an analysis" never shows an empty frame (no blink).
+  useLayoutEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       tracedRef.current();
       return undefined;
@@ -158,7 +160,7 @@ export default function TraceTransition({ onTraced = () => {}, top = 0, settled 
       }
       raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
+    frame(performance.now());
     return () => cancelAnimationFrame(raf);
   }, []);
 
