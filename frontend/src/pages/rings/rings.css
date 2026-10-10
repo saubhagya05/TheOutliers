@@ -113,3 +113,11 @@
 .edge-chip em { font-style: normal; color: var(--muted); font-family: var(--mono); font-size: 11px; }
 .edge-chip.off { opacity: .4; text-decoration: line-through; }
 .edge-swatch { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+
+/* Small instruction note over the ring graph (hidden once a ring is selected) */
+.graph-note {
+  position: absolute; top: 14px; left: 14px; pointer-events: none;
+  font-size: 13px; color: var(--text); background: rgba(6, 17, 39, .82);
+  border: 1px solid var(--red); border-radius: 999px; padding: 5px 14px;
+}
+.graph-note::before { content: 'ⓘ  '; color: var(--red); }

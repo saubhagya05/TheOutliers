@@ -650,6 +650,7 @@ export default function ConstellationGraph({ data, selectedRingId, onSelectRing,
           })}
         </div>
       )}
+      {!selectedRingId && <div className="graph-note">Click on any ring to get its detailed analysis</div>}
       <div className="graph-hint">{selectedRingId ? `${selectedRingId} · click empty space to reset` : `Top ${VISIBLE_RINGS} rings by risk · click one, or pick any ring from the list`}</div>
     </div>
   );
