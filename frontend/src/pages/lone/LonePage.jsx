@@ -48,7 +48,7 @@ export default function LonePage() {
       <ErrorBox error={lone.error || points.error} onRetry={refreshAll} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(360px, 1fr)', gap: 16, minHeight: 600 }}>
-        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#040D1F', position: 'relative' }}>
+        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#0F0F11', position: 'relative' }}>
           {lone.loading && !lone.data ? <Loading label="Drawing constellation" /> : (
             <LoneConstellation
               items={items}

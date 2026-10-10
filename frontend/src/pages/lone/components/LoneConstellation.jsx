@@ -239,7 +239,7 @@ export default function LoneConstellation({ items, stars, selectedSignal, select
   const tooltip = (n) => {
     const sub = n.kind === 'hub' ? `signal · ${esc(SIGNAL_BY_ID[n.signal].hint)}`
       : n.kind === 'ghost' ? `${esc(n.id)} · risk ${esc(n.riskScore)} · ${esc(n.status)}` : `${esc(n.id)} · not flagged`;
-    return `<div style="background:#040D1F;border:1px solid ${rgba(palette.faint, 1)};padding:6px 10px;border-radius:6px;font-size:12px">
+    return `<div style="background:#0F0F11;border:1px solid ${rgba(palette.faint, 1)};padding:6px 10px;border-radius:6px;font-size:12px">
       <div style="color:#fff">${esc(n.label)}</div><div style="color:${rgba(palette.muted, 1)}">${sub}</div></div>`;
   };
 
@@ -255,7 +255,7 @@ export default function LoneConstellation({ items, stars, selectedSignal, select
         width={size.w}
         height={size.h}
         graphData={graphData}
-        backgroundColor="#040D1F"
+        backgroundColor="#0F0F11"
         nodeRelSize={4}
         nodeCanvasObject={drawNode}
         nodeCanvasObjectMode={() => 'replace'}
