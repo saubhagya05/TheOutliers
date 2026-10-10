@@ -126,8 +126,12 @@ export default function RequireDataset({ children, bar = true }) {
     <>
       {bar && (
         <div className="gate-bar">
-          <span>Dataset: <strong>{d.name}</strong> · {d.recordCount.toLocaleString('en-IN')} records
-            {d.source === 'upload' && <span className="gate-tag small">uploaded</span>}</span>
+          <span className="row" style={{ gap: 12 }}>
+            {/* Back to "Choose an analysis" with the same dataset (no need to pick it again). */}
+            <button className="btn" onClick={() => navigate('/analyse')}>← Back</button>
+            <span>Dataset: <strong>{d.name}</strong> · {d.recordCount.toLocaleString('en-IN')} records
+              {d.source === 'upload' && <span className="gate-tag small">uploaded</span>}</span>
+          </span>
           <button className="btn" onClick={() => { rememberDataset(null); navigate('/'); }}>Change dataset</button>
         </div>
       )}

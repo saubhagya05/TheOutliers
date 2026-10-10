@@ -458,3 +458,8 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 @media (max-width: 700px) {
   .landing-eyebrow:not(.analyse-title) { font-size: clamp(30px, 9vw, 44px); white-space: normal; }
 }
+/* Keep the one-line title centred on the page even when it is wider than the content column */
+.landing-eyebrow:not(.analyse-title) { width: max-content; position: relative; left: 50%; transform: translateX(-50%); }
+@media (max-width: 700px) {
+  .landing-eyebrow:not(.analyse-title) { width: auto; left: 0; transform: none; }
+}
