@@ -591,8 +591,8 @@ export default function ConstellationGraph({ data, selectedRingId, onSelectRing,
   };
 
   const tooltip = (n) =>
-    `<div style="background:#040D1F;border:1px solid ${rgba(palette.faint, 1)};padding:6px 10px;border-radius:6px;font-size:12px">
-      <div style="color:#fff">${esc(n.label)}</div>
+    `<div style="background:#FAFBFD;border:1px solid ${rgba(palette.faint, 1)};padding:6px 10px;border-radius:6px;font-size:12px">
+      <div style="color:#111318">${esc(n.label)}</div>
       <div style="color:${rgba(palette.muted, 1)}">${esc(n.type)}${n.ringId ? ` · ${esc(n.ringId)}` : ''} · risk ${esc(n.riskScore)}</div>
     </div>`;
 
@@ -605,7 +605,7 @@ export default function ConstellationGraph({ data, selectedRingId, onSelectRing,
         width={size.w}
         height={size.h}
         graphData={graphData}
-        backgroundColor="#040D1F"
+        backgroundColor="#FAFBFD"
         nodeRelSize={4}
         nodeCanvasObject={drawNode}
         nodeCanvasObjectMode={() => 'replace'}

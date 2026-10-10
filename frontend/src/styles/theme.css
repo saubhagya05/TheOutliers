@@ -1,17 +1,17 @@
 /* Black / white / red. Everyone uses these tokens; do not hard-code colours in components.
    Ring colours come from the API (ring.color), everything else from here. */
 :root {
-  --bg: #061127;
-  --surface: #0B1A33;
-  --surface-2: #112447;
-  --border: #1D3460;
-  --text: #f5f5f5;
-  --muted: #8a8a8a;
-  --faint: #2E4A7A;
+  --bg: #FFFFFF;
+  --surface: #F4F6FA;
+  --surface-2: #E9EDF4;
+  --border: #D3DAE6;
+  --text: #111318;
+  --muted: #5B6270;
+  --faint: #B5BFCF;
   --red: #ff2d2d;
   --red-soft: rgba(255, 45, 45, 0.14);
   --red-glow: 0 0 12px rgba(255, 45, 45, 0.6);
-  --white-glow: 0 0 10px rgba(255, 255, 255, 0.35);
+  --white-glow: 0 0 10px rgba(17, 19, 24, 0.15);
 
   --risk-high: #ff2d2d;
   --risk-medium: #ff9f43;
@@ -21,7 +21,7 @@
   --gap: 16px;
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -86,7 +86,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   overflow: visible;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(120, 12, 24, 0.10), transparent 48%),
-    #061127;
+    #FFFFFF;
 }
 
 .landing-content {
@@ -150,17 +150,17 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   gap: 13px;
   padding: clamp(22px, 3vw, 34px);
   text-align: center;
-  border: 1px solid #382025;
+  border: 1px solid #F0C4C9;
   border-radius: 16px;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(255, 35, 55, 0.09), transparent 65%),
-    linear-gradient(145deg, #14112E, #0A1832 72%);
+    linear-gradient(145deg, #FFF1F2, #F4F6FA 72%);
   transition: border-color 200ms ease, transform 200ms ease,
     box-shadow 200ms ease;
 }
 
 .landing-threat-card:hover {
-  border-color: #79303a;
+  border-color: #E06B76;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
   transform: translateY(-3px);
 }
@@ -196,7 +196,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 
 .landing-threat-card h2 {
   margin: 0;
-  color: #f7f7f7;
+  color: #111318;
   font-size: clamp(21px, 2vw, 27px);
   letter-spacing: -0.035em;
 }
@@ -205,7 +205,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   max-width: 440px;
   min-height: 48px;
   margin: 0;
-  color: #aaa1a3;
+  color: #5B6270;
   font-size: 14px;
   line-height: 1.75;
 }
@@ -266,7 +266,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   padding: 6px 10px;
   border: 1px solid #444;
   border-radius: 6px;
-  background: #0B1A33;
+  background: #F4F6FA;
   color: #eee;
   cursor: pointer;
 }
@@ -277,7 +277,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   justify-content: space-between;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid #242424;
+  border-top: 1px solid #D3DAE6;
 }
 
 .landing-footer > span {
@@ -352,7 +352,7 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
   gap: 24px;
   padding: 16px 32px;
   border-bottom: 1px solid var(--border);
-  background: rgba(6, 17, 39, 0.96);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .nav-left {
@@ -397,12 +397,12 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 
 /* Remove red glow from threat cards */
 .landing-threat-card {
-  background: #0A1832 !important;
+  background: #F4F6FA !important;
   box-shadow: none !important;
 }
 
 .landing-threat-card:hover {
-  background: #0A1832 !important;
+  background: #F4F6FA !important;
   box-shadow: none !important;
   transform: none;
 }
