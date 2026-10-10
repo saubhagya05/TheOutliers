@@ -77,7 +77,12 @@ function partial(path, f) {
   return out;
 }
 
-export default function TraceTransition({ onTraced, top = 0 }) {
+// The last traced lines, kept so "Choose an analysis" can redraw the same threads after the page changes.
+// offset = where the canvas top sits relative to the next page (set by LandingPage).
+export const traceMemory = { lines: null, w: 0, h: 0, offset: 0 };
+
+// settled: draw the remembered lines fully arrived (no animation), sized and placed as before.
+export default function TraceTransition({ onTraced = () => {}, top = 0, settled = false }) {
   const canvasRef = useRef(null);
   const tracedRef = useRef(onTraced);
   tracedRef.current = onTraced;
@@ -90,16 +95,19 @@ export default function TraceTransition({ onTraced, top = 0 }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
+    const reuse = settled && traceMemory.lines;
+    const w = reuse ? traceMemory.w : canvas.clientWidth;
+    const h = reuse ? traceMemory.h : canvas.clientHeight;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
 
     const white = cssVar('--text', '#f5f5f5');
     const red = cssVar('--red', '#ff2d2d');
-    const lines = buildLines(w, h);
-    const start = performance.now();
+    const lines = reuse ? traceMemory.lines : buildLines(w, h);
+    if (!settled) Object.assign(traceMemory, { lines, w, h });
+    // Settled: start "in the past" so every line has already arrived and only the red dots pulse.
+    const start = performance.now() - (settled ? TRACE_MS * 2 : 0);
     let raf = 0;
     let told = false;
 
@@ -158,7 +166,9 @@ export default function TraceTransition({ onTraced, top = 0 }) {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      style={{ position: 'absolute', left: 0, right: 0, top: `${top}px`, width: '100%', height: `calc(100% - ${top}px)`, pointerEvents: 'none', zIndex: 0 }}
+      style={settled && traceMemory.lines
+        ? { position: 'absolute', left: 0, top: `${top}px`, width: `${traceMemory.w}px`, height: `${traceMemory.h}px`, pointerEvents: 'none', zIndex: 0 }
+        : { position: 'absolute', left: 0, right: 0, top: `${top}px`, width: '100%', height: `calc(100% - ${top}px)`, pointerEvents: 'none', zIndex: 0 }}
     />
   );
 }

@@ -1,10 +1,15 @@
 // Step 2 of the flow (after a dataset is chosen on the landing page): pick ring or lone analysis.
 import { useNavigate } from 'react-router-dom';
+import TraceTransition, { traceMemory } from './TraceTransition.jsx';
 
-export default function AnalysePage() {
+// withTrace: redraw the landing page's threads behind the cards (false while it is shown inside the landing transition).
+export default function AnalysePage({ withTrace = true }) {
   const navigate = useNavigate();
 
   return (
+    <div className="analyse-root" style={{ position: 'relative', height: '100%', overflow: 'hidden' }}>
+      {withTrace && <TraceTransition settled top={traceMemory.lines ? traceMemory.offset : 0} />}
+      <div style={{ position: 'relative', zIndex: 1, height: '100%' }}>
     <main className="landing-page">
       <div className="landing-content">
         <section className="landing-hero">
@@ -59,5 +64,7 @@ export default function AnalysePage() {
         </footer>
       </div>
     </main>
+      </div>
+    </div>
   );
 }

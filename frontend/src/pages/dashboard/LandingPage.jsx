@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DatasetPicker } from '../../components/DatasetGate.jsx';
-import TraceTransition from './TraceTransition.jsx';
+import TraceTransition, { traceMemory } from './TraceTransition.jsx';
 import AnalysePage from './AnalysePage.jsx';
 
 const TRANSITION_MS = 2200; // same as the trace lines (TraceTransition TRACE_MS)
@@ -24,7 +24,11 @@ export default function LandingPage() {
   const start = () => {
     const stack = stackRef.current;
     const picker = stack && stack.querySelector('.picker');
-    if (stack && picker) setTraceTop(Math.round(picker.getBoundingClientRect().bottom - stack.getBoundingClientRect().top + 6));
+    if (stack && picker) {
+      const top = Math.round(picker.getBoundingClientRect().bottom - stack.getBoundingClientRect().top + 6);
+      setTraceTop(top);
+      traceMemory.offset = top - stack.clientHeight / 2; // canvas top relative to the next page
+    }
     setTracing(true);
     setMounted(true);
   };
@@ -91,7 +95,7 @@ export default function LandingPage() {
         {/* Above the trace lines (z-index 1), so the lines pass behind the Ring / Lone cards.
             Not clickable until the dataset is ready. */}
         <div className="landing-next" style={{ height: '50%', position: 'relative', zIndex: 1, pointerEvents: chosen ? 'auto' : 'none' }}>
-          {mounted && <AnalysePage />}
+          {mounted && <AnalysePage withTrace={false} />}
           {slid && !chosen && <div className="landing-wait">Running detection on your data…</div>}
         </div>
         {/* Lines start below the dataset section and run on into the next page as it slides up. */}
