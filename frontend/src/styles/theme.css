@@ -438,6 +438,17 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 .app:has(.landing-page) .landing-content { justify-content: flex-start; padding-top: clamp(32px, 11vh, 110px); }
 .landing-footer { margin-top: auto; }
 
-/* Dataset strip sits at the bottom of the landing page, just above the footer; the heading stays where it is */
-.landing-page .picker { margin-top: auto; }
-.landing-page .landing-footer { margin-top: clamp(16px, 3vh, 32px); }
+/* Dataset section: centred in the space below the heading, and larger. The heading stays where it is. */
+.landing-page .picker { margin-block: auto; width: min(100%, 1120px); }
+.landing-page .landing-footer { margin-top: 0; }
+.landing-page .picker-row { padding: 28px 34px; gap: 28px; border-radius: 16px; }
+.landing-page .picker-opt { gap: 12px; }
+.landing-page .picker-head { font-size: 20px; }
+.landing-page .picker-opt p { font-size: 15px; line-height: 1.6; }
+.landing-page .picker-opt .btn { font-size: 15px; padding: 10px 20px; }
+.landing-page .picker-file { grid-template-columns: 110px 1fr; font-size: 14px; }
+.landing-page .picker-file em { font-size: 12px; }
+.landing-page .picker-file input { font-size: 13px; }
+.landing-page .picker-file input::file-selector-button { font-size: 13px; padding: 5px 12px; }
+.landing-page .picker-links, .landing-page .picker-links button { font-size: 12.5px; }
+.landing-page .picker-or { font-size: 12px; padding: 0 18px; }
