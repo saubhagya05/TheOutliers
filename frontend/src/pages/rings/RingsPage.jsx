@@ -41,7 +41,7 @@ export default function RingsPage() {
       <ErrorBox error={graph.error || rings.error} onRetry={refreshAll} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(360px, 1fr)', gap: 16, minHeight: 600 }}>
-        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#FAFBFD', position: 'relative' }}>
+        <div className="panel" style={{ padding: 0, overflow: 'hidden', background: '#040D1F', position: 'relative' }}>
           {graph.loading && !graph.data ? <Loading label="Drawing constellation" /> : graph.data && (
             <ConstellationGraph
               data={graph.data}
