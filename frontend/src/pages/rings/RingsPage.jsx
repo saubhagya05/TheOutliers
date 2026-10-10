@@ -1,25 +1,22 @@
 // OWNER: Ring. Spec: docs/TASKS.md "Person B".
 // Layout: big constellation graph (left) + ring list / ring detail (right). Toolbar on top.
 import { useState } from 'react';
-import { getRingsGraph, getRings, getRing, getBaseline } from '../../api/client.js';
+import { getRingsGraph, getRings, getRing } from '../../api/client.js';
 import { useApi } from '../../hooks/useApi.js';
 import { ErrorBox, Loading } from '../../components/States.jsx';
 import ConstellationGraph from './components/ConstellationGraph.jsx';
 import RingList from './components/RingList.jsx';
 import RingDetailPanel from './components/RingDetailPanel.jsx';
-import BaselineToggle, { BaselineOverlay } from './components/BaselineToggle.jsx';
 import StressTestDrawer from './components/StressTestDrawer.jsx';
 import './rings.css';
 
 export default function RingsPage() {
   const [selectedRingId, setSelectedRingId] = useState(null);
   const [sort, setSort] = useState('riskScore'); // 'priorityScore' = the "Prioritise" button
-  const [baselineView, setBaselineView] = useState(false);
   const [stressOpen, setStressOpen] = useState(false);
 
   const graph = useApi(() => getRingsGraph({ includeContext: true, contextNodes: 300 }), []);
   const rings = useApi(() => getRings({ sort, pageSize: 100 }), [sort]);
-  const baseline = useApi(() => getBaseline(), []);
   const detail = useApi(() => (selectedRingId ? getRing(selectedRingId) : Promise.resolve(null)), [selectedRingId]);
 
   // After any flag/deflag, refresh everything that shows status or counts.
@@ -37,7 +34,6 @@ export default function RingsPage() {
           <button className={`btn ${sort === 'priorityScore' ? 'btn-active' : ''}`} onClick={() => setSort(sort === 'priorityScore' ? 'riskScore' : 'priorityScore')}>
             Prioritise
           </button>
-          <BaselineToggle on={baselineView} onChange={setBaselineView} />
           <button className="btn" onClick={() => setStressOpen(true)}>Stress test</button>
         </div>
       </div>
@@ -51,10 +47,8 @@ export default function RingsPage() {
               data={graph.data}
               selectedRingId={selectedRingId}
               onSelectRing={setSelectedRingId}
-              baselineView={baselineView}
             />
           )}
-          {baselineView && <BaselineOverlay baseline={baseline.data} />}
         </div>
         <div className="panel" style={{ overflow: 'auto', maxHeight: 'calc(100vh - 180px)' }}>
           {selectedRingId ? (

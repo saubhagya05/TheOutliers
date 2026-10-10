@@ -1,6 +1,6 @@
 // OWNER: Ring. Props:
 //   data = GET /api/rings/graph response { nodes, edges, rings }
-//   selectedRingId, onSelectRing(ringId | null), baselineView (bool)
+//   selectedRingId, onSelectRing(ringId | null)
 //
 // Layout is deterministic (no physics), so rings read as structures instead of a tangle:
 //   - each ring is a wheel: beneficiaries evenly around the rim, grouped by the shared item they use;

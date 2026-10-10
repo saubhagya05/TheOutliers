@@ -48,13 +48,7 @@ SAY: "Two kinds of ghosts: organised rings, and lone ghosts. Rings first, they'r
 ----------------------------
 DO: Wait 2 to 3 seconds for the graph to settle. Sweep the cursor across the coloured clusters.
 
-SAY: "Every coloured cluster is a fraud ring the pipeline found on its own. Grey dots are ordinary students. 35 rings, ₹1.16 crore at risk."
-
-4b. The money shot: baseline comparison (20 s)
-----------------------------------------------
-DO: Click Compare with unique-ID check. The graph turns grey and the overlay appears. Click it again to switch back.
-
-SAY: "This is what today's unique-ID check sees: zero rings. Every ghost here has a distinct, valid-looking Aadhaar. Our graph finds all of them." (Pause one beat. Let it land.)
+SAY: "Every coloured cluster is a fraud ring the pipeline found on its own. Grey dots are ordinary students. 35 rings, ₹1.16 crore at risk, and a unique-ID check finds zero of them."
 
 4c. Open a ring (40 s)
 ----------------------
