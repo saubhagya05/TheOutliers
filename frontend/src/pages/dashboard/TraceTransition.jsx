@@ -158,7 +158,7 @@ export default function TraceTransition({ onTraced, top = 0 }) {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      style={{ position: 'absolute', left: 0, right: 0, top: `${top}px`, width: '100%', height: `calc(100% - ${top}px)`, pointerEvents: 'none', zIndex: 5 }}
+      style={{ position: 'absolute', left: 0, right: 0, top: `${top}px`, width: '100%', height: `calc(100% - ${top}px)`, pointerEvents: 'none', zIndex: 0 }}
     />
   );
 }

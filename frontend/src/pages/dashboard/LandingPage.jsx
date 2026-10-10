@@ -76,7 +76,8 @@ export default function LandingPage() {
             </div>
           </main>
         </div>
-        <div style={{ height: '50%' }}>{scrolling && <AnalysePage />}</div>
+        {/* Above the trace lines (z-index 1), so the lines pass behind the Ring / Lone cards. */}
+        <div className="landing-next" style={{ height: '50%', position: 'relative', zIndex: 1 }}>{scrolling && <AnalysePage />}</div>
         {/* Lines start below the dataset section and run on into the next page as it slides up. */}
         {tracing && <TraceTransition top={traceTop} onTraced={() => setTraced(true)} />}
       </div>

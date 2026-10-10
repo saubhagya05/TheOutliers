@@ -463,3 +463,6 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 @media (max-width: 700px) {
   .landing-eyebrow:not(.analyse-title) { width: auto; left: 0; transform: none; }
 }
+
+/* Next page during the landing transition: transparent background so the trace lines show between (not over) the cards */
+.landing-next .landing-page { background: transparent; }
