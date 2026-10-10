@@ -466,3 +466,9 @@ table.data tr.deflagged td { opacity: .4; text-decoration: line-through; }
 
 /* Next page during the landing transition: transparent background so the trace lines show between (not over) the cards */
 .landing-next .landing-page { background: transparent; }
+/* Shown on the next page if the slide finished but the uploaded dataset is still being analysed */
+.landing-wait {
+  position: absolute; left: 50%; bottom: 48px; transform: translateX(-50%);
+  font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--red);
+  border-radius: 999px; padding: 8px 18px;
+}
